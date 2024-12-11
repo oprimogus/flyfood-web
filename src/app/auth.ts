@@ -1,17 +1,60 @@
-import { env } from '@/config/env';
-import NextAuth from 'next-auth';
-import ZITADEL from 'next-auth/providers/zitadel';
+import { env } from '@/config/env'
+import NextAuth from 'next-auth'
+import type { JWT } from 'next-auth/jwt'
+import ZITADEL from 'next-auth/providers/zitadel'
+import * as openid from 'openid-client'
 
 declare module 'next-auth' {
   interface Session {
     user: {
-      id: string; // ID do usuário
-      email: string; // Email do usuário
-      name: string; // Nome do usuário
-      role?: string; // Role personalizada
-      accessToken: string;
+      id: string // ID do usuário
+      email: string // Email do usuário
+      name: string // Nome do usuário
+      role?: string // Role personalizada
+      accessToken: string
       // Adicione mais campos conforme necessário
-    };
+    }
+  }
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    accessToken?: string
+    refreshToken?: string
+    expiresAt?: number
+  }
+}
+
+async function refreshAccessToken(token: JWT): Promise<JWT> {
+  console.log('token: ', token)
+  try {
+    const baseURL = new URL(env.zitadel.issuer)
+    const conf = await openid.discovery(baseURL, env.zitadel.clientID, {}, undefined, {
+      execute: [openid.allowInsecureRequests]
+    })
+
+    if (!token.refreshToken) {
+      return {
+        ...token,
+        error: 'RefreshAccessTokenError'
+      }
+    }
+
+    const { access_token, refresh_token, expires_in } =
+      await openid.refreshTokenGrant(conf, token.refreshToken)
+
+    return {
+      ...token,
+      accessToken: access_token,
+      expiresAt: (expires_in ?? 0) * 1000,
+      refreshToken: refresh_token
+    }
+  } catch (error) {
+    console.error('Error during refreshAccessToken', error)
+    return {
+      ...token,
+      error: 'RefreshAccessTokenError'
+    }
   }
 }
 
@@ -23,24 +66,50 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       issuer: env.zitadel.issuer,
       authorization: {
         params: {
-          scope: 'openid profile email phone',
-        },
+          scope: 'openid profile email phone'
+        }
       },
       async profile(profile) {
-        return { ...profile };
-      },
-    }),
+        return { ...profile }
+      }
+    })
   ],
   callbacks: {
-    jwt({ token, account, user }) {
+    signIn({ account }) {
       if (account?.provider === 'zitadel') {
-        return { ...token, accessToken: account.access_token };
+        return true
       }
-      return token;
+      return false
     },
-    async session({ session, token }) {
-      session.user.accessToken = token.accessToken as string;
-      return session;
+    redirect({ url, baseUrl }) {
+      return baseUrl
     },
-  },
-});
+    jwt({ token, account, user }) {
+      token.accessToken ??= account?.access_token
+      token.refreshToken ??= account?.refresh_token
+      token.expiresAt ??= (account?.expires_at ?? 0) * 1000
+      token.error = undefined
+      // Return previous token if the access token has not expired yet
+      if (Date.now() < (token.expiresAt)) {
+        return token
+      }
+
+      // Access token has expired, try to update it
+      return refreshAccessToken(token)
+    },
+    async session({ session, token, user }) {
+      session.user = {
+        ...user,
+        id: user?.id,
+        email: user?.email,
+        name: user?.name ?? '',
+        accessToken: token.accessToken ?? ''
+      }
+      return session
+    }
+    // authorized: async ({ auth }) => {
+    //   // Logged in users are authenticated, otherwise redirect to login page
+    //   return !!auth
+    // },
+  }
+})

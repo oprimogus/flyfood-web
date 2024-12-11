@@ -1,49 +1,53 @@
-import { auth } from '@/app/auth';
-import { env } from '@/config/env';
-import type { Customer, FlyFoodError, Store } from './types';
+import { auth } from '@/app/auth'
+import { env } from '@/config/env'
+import type { Customer, FlyFoodError, Store } from './types'
+import { Session } from 'next-auth'
 
 const client = {
-  baseURL: env.clients.flyfoodApi.baseURL,
-};
+  baseURL: env.clients.flyfoodApi.baseURL
+}
 
-export const getCustomerV1 = async (): Promise<Customer | FlyFoodError> => {
-  const token = await auth();
+export const getCustomerV1 = async (session: Session): Promise<Customer> => {
   const req = await fetch(`${client.baseURL}/v1/customer`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${token?.user.accessToken}`,
+      Authorization: `Bearer ${session?.user.accessToken}`
     },
     next: {
       revalidate: 10,
-      tags: ['get-customer'],
-    },
-  });
+      tags: ['customer']
+    }
+  })
+
+  console.log('req: ', req)
 
   if (!req.ok) {
-    const errorData = await req.json();
-    return errorData as FlyFoodError;
+    const errorData = await req.json()
+    throw new Error(
+      `Error fetching customer data: ${JSON.stringify(errorData)}`
+    )
   }
 
-  return await req.json();
-};
+  return await req.json()
+}
 
 export const getStoreByIDV1 = async (id: string): Promise<Store> => {
-  const token = await auth();
+  const token = await auth()
   const req = await fetch(`${client.baseURL}/v1/store?id=${id}`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${token?.user.accessToken}`,
+      Authorization: `Bearer ${token?.user.accessToken}`
     },
     next: {
       revalidate: 10,
-      tags: [`store-${id}`],
-    },
-  });
+      tags: [`store-${id}`]
+    }
+  })
 
   if (!req.ok) {
-    const reqError = (await req.json()) as FlyFoodError;
-    throw new Error(reqError.error);
+    const reqError = (await req.json()) as FlyFoodError
+    throw new Error(reqError.error)
   }
 
-  return await req.json();
-};
+  return await req.json()
+}
