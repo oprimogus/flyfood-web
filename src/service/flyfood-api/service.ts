@@ -19,8 +19,6 @@ export const getCustomerV1 = async (session: Session): Promise<Customer> => {
     }
   })
 
-  console.log('req: ', req)
-
   if (!req.ok) {
     const errorData = await req.json()
     throw new Error(
@@ -31,7 +29,7 @@ export const getCustomerV1 = async (session: Session): Promise<Customer> => {
   return await req.json()
 }
 
-export const getStoreByIDV1 = async (id: string): Promise<Store> => {
+export const getStoreByV1 = async (id: string): Promise<Store> => {
   const token = await auth()
   const req = await fetch(`${client.baseURL}/v1/store?id=${id}`, {
     method: 'GET',

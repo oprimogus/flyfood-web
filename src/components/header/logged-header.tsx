@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
@@ -22,7 +21,6 @@ import { useQuery } from '@tanstack/react-query'
 import { Search, ShoppingCart, User } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { Button } from '../ui/button'
 import { DialogFooter, DialogHeader } from '../ui/dialog'
 import { Input } from '../ui/input'
 import { signOut, useSession } from "next-auth/react"
@@ -38,6 +36,7 @@ export default function LoggedHeader() {
   const session = useSession()
   const { data: customer } = useQuery({
     queryKey: ['customer'],
+    staleTime: Infinity,
     queryFn: () => getCustomerV1(session.data as Session),
     enabled: !!session?.data,
   })
@@ -59,21 +58,11 @@ export default function LoggedHeader() {
         <h1 className='text-white text-xl font-bold'>FLYFOOD</h1>
       </Link>
 
-      {/* Navegação */}
-      <div className='hidden md:flex flex-row items-center text-white space-x-4'>
-        <Link href='/' className='hover:underline'>
-          Restaurantes
-        </Link>
-        <Link href='/' className='hover:underline'>
-          Lojas
-        </Link>
-      </div>
-
       {/* Barra de busca centralizada */}
       <form
         className='flex items-center absolute left-1/2 transform -translate-x-1/2 bg-white rounded-full shadow-lg w-2/5 h-12 md:w-1/3 focus-within:outline-none focus-within:ring-0'
         method='POST'
-        action='/api/search'
+        action='/restaurant'
       >
         <div className='flex items-center px-4'>
           <Search className='w-5 h-5 text-gray-500' />
@@ -102,10 +91,7 @@ export default function LoggedHeader() {
               <DialogTitle className='text-2xl font-semibold text-gray-800'>
                 Qual o endereço de entrega?
               </DialogTitle>
-              <DialogDescription className='text-gray-500 mt-2'>
-                Detalhes do seu endereço de entrega
-              </DialogDescription>
-              <form
+              {/* <form
                 className='flex items-center bg-gray-100 rounded-full shadow-md w-full h-12 mt-4'
                 method='POST'
                 action='/api/search'
@@ -120,7 +106,7 @@ export default function LoggedHeader() {
                   placeholder='Buscar endereço e número...'
                   required
                 />
-              </form>
+              </form> */}
             </DialogHeader>
 
             {/* Conteúdo do diálogo */}
@@ -145,13 +131,6 @@ export default function LoggedHeader() {
             )}
             <DialogFooter className='mt-4'>
               <DialogClose asChild>
-                <Button
-                  type='button'
-                  variant='secondary'
-                  className='px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition duration-200'
-                >
-                  Fechar
-                </Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>

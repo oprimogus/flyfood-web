@@ -47,6 +47,14 @@ export type Store = {
   paymentMethods: PaymentMethod[]
 }
 
+export type GetStoresByFilter = {
+  id?: string,
+  name?: string,
+  score?: string,
+  type?: StoreType,
+  distance?: number
+}
+
 export type FlyFoodError = {
   error: string
   details: unknown
