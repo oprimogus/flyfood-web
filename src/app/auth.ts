@@ -21,12 +21,11 @@ declare module 'next-auth/jwt' {
   interface JWT {
     accessToken?: string
     refreshToken?: string
-    expiresAt?: number
+    expiresAt: number
   }
 }
 
 async function refreshAccessToken(token: JWT): Promise<JWT> {
-  console.log('token: ', token)
   try {
     const baseURL = new URL(env.zitadel.issuer)
     const conf = await openid.discovery(baseURL, env.zitadel.clientID, {}, undefined, {
@@ -34,10 +33,11 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
     })
 
     if (!token.refreshToken) {
-      return {
-        ...token,
-        error: 'RefreshAccessTokenError'
-      }
+      // return {
+      //   ...token,
+      //   error: 'RefreshAccessTokenError'
+      // }
+      return signIn('zitadel')
     }
 
     const { access_token, refresh_token, expires_in } =
@@ -81,9 +81,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return false
     },
-    redirect({ url, baseUrl }) {
-      return baseUrl
-    },
     jwt({ token, account, user }) {
       token.accessToken ??= account?.access_token
       token.refreshToken ??= account?.refresh_token
@@ -98,6 +95,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return refreshAccessToken(token)
     },
     async session({ session, token, user }) {
+      if (Date.now() > token.expiresAt) {
+        throw new Error('Session expired')
+      }
       session.user = {
         ...user,
         id: user?.id,
@@ -106,10 +106,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         accessToken: token.accessToken ?? ''
       }
       return session
-    }
-    // authorized: async ({ auth }) => {
-    //   // Logged in users are authenticated, otherwise redirect to login page
-    //   return !!auth
-    // },
+    },
+    authorized: async ({ auth }) => {
+      // Logged in users are authenticated, otherwise redirect to login page
+      return !!auth
+    },
   }
 })

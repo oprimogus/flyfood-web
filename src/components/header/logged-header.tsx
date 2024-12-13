@@ -27,18 +27,17 @@ import { signOut, useSession } from "next-auth/react"
 import { Session } from 'next-auth'
 
 export interface LoggedHeaderProps {
-  customer: Customer
+  session: Session
 }
 
-export default function LoggedHeader() {
+export default function LoggedHeader(props: LoggedHeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [address, setAddress] = useState<Address | null>(null)
-  const session = useSession()
   const { data: customer } = useQuery({
     queryKey: ['customer'],
     staleTime: Infinity,
-    queryFn: () => getCustomerV1(session.data as Session),
-    enabled: !!session?.data,
+    queryFn: () => getCustomerV1(props.session),
+    enabled: !!props.session.user,
   })
 
   useEffect(() => {
