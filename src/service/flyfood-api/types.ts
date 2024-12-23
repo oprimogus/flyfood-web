@@ -47,16 +47,28 @@ export type Store = {
   paymentMethods: PaymentMethod[]
 }
 
-export type GetStoresByFilter = {
-  id?: string,
-  name?: string,
-  score?: string,
-  type?: StoreType,
-  distance?: number
+export type QueryStore = {
+  id: string
+  name: string
+  isOpen: boolean
+  score: number
+  neighborhood: string;
+  city: string;
+  type: StoreType
+  profileImage: string
 }
 
 export type FlyFoodError = {
   error: string
   details: unknown
   traceID: string
+}
+
+export type GetStoresByFilter = {
+  name?: string
+  city: string
+  isOpen?: boolean,
+  type?: StoreType
+  page: number,
+  maxItems: number
 }

@@ -34,7 +34,7 @@ export default function Header() {
       <div className='hidden items-center md:flex space-x-4 text-white'>
         <Button
           type='button'
-          onClick={() => signIn('zitadel', { redirectTo: '/restaurant' })}>
+          onClick={() => signIn('zitadel', { redirectTo: '/restaurants' })}>
           Entre ou cadastre-se
         </Button>
       </div>

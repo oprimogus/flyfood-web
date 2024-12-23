@@ -4,14 +4,14 @@ import AddressSection from '@/components/section//address-section'
 import BusinessHoursSection from '@/components/section/business-hour-section'
 import PaymentMethodsSection from '@/components/section/payment-method-section'
 import StoreInfo from '@/components/section/store-info'
-import { getStoreByV1 } from '@/service/flyfood-api/service'
+import { getStoreByIDV1 } from '@/service/flyfood-api/service'
 
 export interface ShowStoreProps {
   id: string
 }
 
 export default async function ShowStore({ id }: ShowStoreProps) {
-  const store = await getStoreByV1(id as string)
+  const store = await getStoreByIDV1(id as string)
 
   return (
     <div className='flex flex-col justify-center items-center max-w-6xl mx-auto'>

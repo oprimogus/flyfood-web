@@ -1,4 +1,4 @@
-import LoggedHeader from '@/components/header/logged-header'
+import LoggedHeader from '@/components/header/logged-header3'
 import { auth } from '../auth'
 import { redirect } from 'next/navigation'
 

@@ -7,7 +7,7 @@ export default async function Root() {
   const session = await auth()
   return (
     <main>
-      {session?.user ? <LoggedHeader session={session} /> : <Header />}
+      {session?.user ? <LoggedHeader session={session} /> : <Header/>}
       <section className='h-screen bg-red-100 flex flex-col items-center justify-center text-center p-6'>
         <h2 className='text-4xl font-bold text-gray-800'>
           Receba suas comidas favoritas em minutos!
