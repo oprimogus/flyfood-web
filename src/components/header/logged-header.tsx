@@ -2,27 +2,19 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Search, ShoppingCart, User } from 'lucide-react'
 import { Session } from 'next-auth'
 import Link from 'next/link'
 import React from 'react'
 import AddressSelector from '@/components/selector/address-selector'
 import MobileMenu from '@/components/menu/mobile-menu'
-import { useCustomer, useSelectedAddress } from '@/hooks/use-api'
 
 export interface LoggedHeaderProps {
   session: Session
 }
 
 export default function LoggedHeader({ session }: LoggedHeaderProps) {
-  const { customer } = useCustomer(session)
-  const { selectedAddress, setSelectedAddress } = useSelectedAddress()
-  if (!selectedAddress) {
-    setSelectedAddress(customer?.addresses[0])
-  }
-  console.log('selectedAddress: ', selectedAddress)
-
   return (
     <nav className='w-full bg-red-600 shadow p-4 flex items-center justify-between relative'>
       <div className="flex items-center space-x-2">
@@ -55,7 +47,7 @@ export default function LoggedHeader({ session }: LoggedHeaderProps) {
       </div>
 
       <div className='flex items-center space-x-4'>
-        <AddressSelector address={selectedAddress} setAddress={setSelectedAddress} customer={customer} />
+        <AddressSelector session={session}/>
         <Button variant="ghost" size="icon" className="text-white">
           <ShoppingCart className='w-6 h-6' />
         </Button>
@@ -66,6 +58,10 @@ export default function LoggedHeader({ session }: LoggedHeaderProps) {
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-white">
+            <SheetHeader>
+              <SheetTitle>Menu</SheetTitle>
+              <SheetDescription></SheetDescription>
+            </SheetHeader>
             <MobileMenu session={session} />
           </SheetContent>
         </Sheet>

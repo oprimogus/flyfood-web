@@ -1,3 +1,27 @@
+import { ApiError } from "@/service/http"
+
+export type FlyFoodError = ApiError & {
+  traceID: string
+  error: string
+  details?: unknown
+  debug?: unknown
+}
+
+export type FlyFoodFieldError = {
+  field: string
+  input: string
+  message: string
+  debug?: string
+}
+
+export type FlyFoodValidationError = Omit<FlyFoodError, 'details'> & {
+  details: FlyFoodFieldError[]
+}
+
+export type StoreType = 'RESTAURANT' | 'PHARMACY' | 'TOBBACO' | 'MARKET' | 'PUB'
+
+export type PaymentMethod = 'CREDIT' | 'DEBIT' | 'PIX' | 'CASH' | 'BTC'
+
 export type Address = {
   name: string
   addressLine1: string
@@ -21,10 +45,6 @@ export type Customer = {
   addresses: Address[]
   ordersID: string[]
 }
-
-export type StoreType = 'RESTAURANT' | 'PHARMACY' | 'TOBBACO' | 'MARKET' | 'PUB'
-
-export type PaymentMethod = 'CREDIT' | 'DEBIT' | 'PIX' | 'CASH' | 'BTC'
 
 export type BusinessHours = {
   weekDay: number
@@ -56,12 +76,6 @@ export type QueryStore = {
   city: string;
   type: StoreType
   profileImage: string
-}
-
-export type FlyFoodError = {
-  error: string
-  details: unknown
-  traceID: string
 }
 
 export type GetStoresByFilter = {

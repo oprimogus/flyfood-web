@@ -7,6 +7,9 @@ export const env = {
   clients: {
     flyfoodApi: {
       baseURL: process.env.CLIENT_FLYFOOD_API ?? 'http://localhost:3000/api'
+    },
+    viacep: {
+      baseURL: process.env.CLIENT_VIACEP_API ?? 'http://viacep.com.br'
     }
   }
 }

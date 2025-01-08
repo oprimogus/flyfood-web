@@ -8,9 +8,9 @@ interface StoreHeaderProps {
 
 export default function StoreHeader({ store }: StoreHeaderProps) {
   return (
-    <div className='relative w-full h-64 overflow-hidden rounded-t-lg'>
+    <div className='relative w-full overflow-hidden rounded-t-lg h-48 lg:h-64'>
       {!store.headerImage && (
-        <div className="w-full h-full bg-gradient-to-r from-blue-500 to-green-500 flex items-center justify-center">
+        <div className="w-full h-full bg-gradient-to-r from-red-200 to-red-500 flex items-center justify-center">
         </div>
       )}
       {store.headerImage && (

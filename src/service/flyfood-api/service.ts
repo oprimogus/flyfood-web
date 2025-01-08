@@ -1,8 +1,8 @@
 import { auth } from '@/app/auth'
 import { env } from '@/config/env'
-import type { Customer, FlyFoodError, GetStoresByFilter, Store } from './types'
+import type { Address, Customer, FlyFoodError, FlyFoodValidationError, GetStoresByFilter, QueryStore, Store } from './types'
 import { Session } from 'next-auth'
-import { useSession } from 'next-auth/react'
+import { fetchApi, Result } from '@/service/http'
 
 const client = {
   baseURL: env.clients.flyfoodApi.baseURL
@@ -12,11 +12,8 @@ export const getCustomerV1 = async (session: Session): Promise<Customer> => {
   const req = await fetch(`${client.baseURL}/v1/customer`, {
     method: 'GET',
     headers: {
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${session?.user.accessToken}`
-    },
-    next: {
-      revalidate: 10,
-      tags: ['customer']
     }
   })
 
@@ -30,16 +27,33 @@ export const getCustomerV1 = async (session: Session): Promise<Customer> => {
   return await req.json()
 }
 
+export const addNewAddressV1 = async (session: Session, params: Address): Promise<void> => {
+  console.log('addNewAddress: ', params)
+  const req = await fetch(`${client.baseURL}/v1/customer/address`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${session?.user.accessToken}`
+    },
+    body: JSON.stringify(params),
+  })
+  if (!req.ok) {
+    const errorData = await req.json()
+    console.log('addNewAddress: ', errorData)
+    throw new Error(
+      errorData
+    )
+  }
+  console.log('addNewAddress: ', await req.json())
+}
+
 export const getStoreByIDV1 = async (id: string): Promise<Store> => {
   const token = await auth()
   const req = await fetch(`${client.baseURL}/v1/store/${id}`, {
     method: 'GET',
     headers: {
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token?.user.accessToken}`
-    },
-    next: {
-      revalidate: 10,
-      tags: [`store-${id}`]
     }
   })
 
@@ -69,11 +83,8 @@ export const getStoreByFilterV1 = async (params: GetStoresByFilter, token: strin
     const req = await fetch(`${client.baseURL}/v1/store${query}`, {
       method: 'GET',
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
-      },
-      next: {
-        revalidate: 10,
-        tags: [`stores-${params.city}`]
       }
     })
 
@@ -96,3 +107,83 @@ export const getStoreByFilterV1 = async (params: GetStoresByFilter, token: strin
   }
 
 }
+
+export class FlyFoodApi {
+  private static instance: FlyFoodApi
+  private readonly baseURL = env.clients.flyfoodApi.baseURL
+
+  private constructor() { }
+
+  public static getInstance(): FlyFoodApi {
+    if (!FlyFoodApi.instance) {
+      FlyFoodApi.instance = new FlyFoodApi()
+    }
+
+    return FlyFoodApi.instance
+  }
+
+  async getCustomerV1(session: Session): Promise<Result<Customer, FlyFoodError>> {
+    return await fetchApi<Customer, FlyFoodError>(this.baseURL, '/v1/customer', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.user.accessToken}`,
+      },
+    })
+  }
+
+  async addNewAddressV1(session: Session, params: Address): Promise<Result<void, FlyFoodError>> {
+    return await fetchApi<void, FlyFoodError>(this.baseURL, '/v1/customer/address', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.user.accessToken}`,
+      },
+      requestBody: params,
+    })
+  }
+
+  async removeAddressV1(session: Session, params: Address): Promise<Result<void, FlyFoodError>> {
+    return await fetchApi<void, FlyFoodError>(this.baseURL, '/v1/customer/address', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.user.accessToken}`,
+      },
+      requestBody: params,
+    })
+  }
+
+  async getStoreByIDV1(session: Session, id: string): Promise<Result<Store, FlyFoodError>> {
+    return await fetchApi<Store, FlyFoodError>(this.baseURL, `/v1/store/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.user.accessToken}`,
+      },
+    })
+  }
+
+  async getStoreByFilterV1(session: Session, params: GetStoresByFilter): Promise<Result<QueryStore[], FlyFoodValidationError>> {
+    const queryParams: Record<string, string> = {}
+    if (params.name) queryParams.name = params.name
+    if (params.city) queryParams.city = params.city
+    if (params.isOpen) queryParams.isOpen = String(params.isOpen)
+    if (params.type) queryParams.type = String(params.type)
+    if (params.page) queryParams.page = String(params.page)
+    if (params.maxItems) queryParams.maxItems = String(params.maxItems)
+
+    return await fetchApi<QueryStore[], FlyFoodValidationError>(this.baseURL, '/v1/store', {
+      method: 'GET',
+      query: queryParams,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.user.accessToken}`,
+      },
+    })
+  
+  }
+
+}
+
+export const flyFoodApi = FlyFoodApi.getInstance()

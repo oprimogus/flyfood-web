@@ -1,44 +1,95 @@
-import { getCustomerV1, getStoreByFilterV1 } from "@/service/flyfood-api/service";
-import { Address, GetStoresByFilter, QueryStore } from "@/service/flyfood-api/types";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Session } from "next-auth";
-import { useSession } from "next-auth/react";
+import { flyFoodApi } from "@/service/flyfood-api/service";
+import { Address, GetStoresByFilter } from "@/service/flyfood-api/types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Session } from "next-auth"
+import { useEffect } from "react";
 
 export function useCustomer(session: Session) {
-  const { data: customer } = useQuery({
+  const { data, isPending: isCustomerLoading } = useQuery({
     queryKey: ['customer'],
     staleTime: Infinity,
-    queryFn: () => getCustomerV1(session),
-    enabled: !!session.user,
+    queryFn: async () => flyFoodApi.getCustomerV1(session),
   })
-
-  return { customer }
+  return { data, isCustomerLoading }
 }
 
-export function useSelectedAddress() {
+export function useAddress(session: Session) {
   const queryClient = useQueryClient()
+
   const setSelectedAddress = (newAddress: Address | undefined) => {
     queryClient.setQueryData<Address>(['selectedAddress'], newAddress)
   }
 
+  const { data: customer } = useCustomer(session)
+
   const { data: selectedAddress } = useQuery<Address | undefined>({
     queryKey: ['selectedAddress'],
     staleTime: Infinity,
-    enabled: false,
   })
 
-  return { selectedAddress, setSelectedAddress }
+  const addresses = customer?.ok ? customer.value.addresses : []
+
+  useEffect(() => {
+    if (!selectedAddress && addresses.length > 0) {
+      setSelectedAddress(addresses[0])
+    }
+  }, [addresses, selectedAddress])
+
+  return { addresses, selectedAddress, setSelectedAddress }
 }
 
-export function useStores(params: GetStoresByFilter) {
-  const { data: session } = useSession()
-  const { data: storeList, isError, isLoading } = useQuery<QueryStore[]>({
+export function useAddAddress(session: Session) {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationKey: ['addAddress'],
+    mutationFn: async (params: Address) => {
+      const result = await flyFoodApi.addNewAddressV1(session, params)
+      console.log('result: ', result)
+      if (!result.ok) {
+        throw new Error(JSON.stringify(result.error))
+      }
+    },
+    onSuccess: () => 
+      queryClient.invalidateQueries({
+        queryKey: ['customer', 'selectedAddress']
+      })
+    },
+  )
+
+  return { ...mutation }
+}
+
+export function useRemoveAddress(session: Session) {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationKey: ['removeAddress'],
+    mutationFn: async (params: Address) => {
+      const result = await flyFoodApi.removeAddressV1(session, params);
+      if (!result.ok) {
+        throw new Error(JSON.stringify(result.error))
+      }
+      return result.value
+    },
+    onSuccess: () => 
+      queryClient.invalidateQueries({
+        queryKey: ['customer', 'selectedAddress']
+      })
+    },
+  )
+
+  return { ...mutation }
+}
+
+export function useStores(session: Session, params: GetStoresByFilter) {
+  const { data: storeList, isError, isLoading } = useQuery({
     queryKey: [`stores-${params.city || 'default-city'}`],
     queryFn: async () => {
-      return getStoreByFilterV1(params, session?.user.accessToken as string);
+      return flyFoodApi.getStoreByFilterV1(session, params)
     },
-    staleTime: 0, // Opcional: garante que os dados não sejam reutilizados do cache
-    enabled: Boolean(params.city), // Verifica se params.city está definido
+    staleTime: 1 * 1000 * 60,
+    enabled: Boolean(params.city),
   });
 
   return { storeList, isError, isLoading };

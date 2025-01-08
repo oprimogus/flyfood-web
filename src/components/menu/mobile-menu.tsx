@@ -9,8 +9,7 @@ interface MobileMenuProps {
 
 export default function MobileMenu({ session }: MobileMenuProps) {
   return (
-    <div className="flex flex-col space-y-4 pt-10">
-      <h2 className="text-lg font-semibold mb-4">Menu</h2>
+    <div className="flex flex-col space-y-4">
       {session !== null && (
         <>
           <Link href="/profile" className="text-lg">
@@ -38,8 +37,6 @@ export default function MobileMenu({ session }: MobileMenuProps) {
             Sair
           </Button>
         </>
-
-
       )}
       {session === null && (
         <>
@@ -54,10 +51,7 @@ export default function MobileMenu({ session }: MobileMenuProps) {
             Entrar ou cadastrar-se
           </Button>
         </>
-
-
       )}
-
     </div>
   )
 }

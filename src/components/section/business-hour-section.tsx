@@ -19,6 +19,8 @@ export default function BusinessHoursSection({
     'Sábado'
   ]
 
+  console.log(businessHours)
+
   return (
     <Card>
       <CardHeader>
