@@ -1,6 +1,6 @@
 export type Result<T, E = Error> =
-  | { ok: true, value: T }
-  | { ok: false, error: E }
+  | { ok: true; value: T }
+  | { ok: false; error: E }
 
 export type ApiError = {
   code: string
@@ -30,7 +30,7 @@ export async function fetchApi<T = void, E = ApiError>(
     const fetchOptions: RequestInit = {
       method,
       headers,
-      body: requestBody ? JSON.stringify(requestBody) : undefined,
+      body: requestBody ? JSON.stringify(requestBody) : undefined
     }
 
     const response = await fetch(url.toString(), fetchOptions)
@@ -44,21 +44,20 @@ export async function fetchApi<T = void, E = ApiError>(
         error: {
           code: response.status.toString(),
           message: response.statusText || 'Unknown error',
-          ...(responseBody as E),
-        },
+          ...(responseBody as E)
+        }
       }
     }
 
-    return { ok: true, value: responseBody as T || (undefined as T) }
+    return { ok: true, value: (responseBody as T) || (undefined as T) }
   } catch (error: any) {
     return {
       ok: false,
       error: {
         code: 'FETCH_ERROR',
         message: error.message || 'Network error',
-        exception: error,
-      } as E,
+        exception: error
+      } as E
     }
   }
 }
-

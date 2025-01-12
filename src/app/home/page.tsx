@@ -7,7 +7,5 @@ export default async function Home() {
   if (!session) {
     redirect('/')
   }
-  return (
-    <LoggedHeader session={session}/>
-  )
+  return <LoggedHeader session={session} />
 }

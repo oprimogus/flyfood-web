@@ -5,13 +5,19 @@ import ProductSearch from '@/components/input/product-search'
 import AddressSection from '@/components/section/address-section'
 import BusinessHoursSection from '@/components/section/business-hour-section'
 import PaymentMethodsSection from '@/components/section/payment-method-section'
-import { getStoreByIDV1 } from '@/service/flyfood-api/service'
 import { redirect } from 'next/navigation'
 
 import { Badge } from '@/components/ui/badge'
-import { Phone, Star } from 'lucide-react'
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
+import { Star } from 'lucide-react'
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger
+} from '@/components/ui/drawer'
 import ContactSection from '@/components/section/contact-section'
+import { flyFoodApi } from '@/service/flyfood-api/service'
 
 export default async function StorePage({
   params
@@ -21,7 +27,13 @@ export default async function StorePage({
   if (!session) {
     redirect('/')
   }
-  const store = await getStoreByIDV1(id as string)
+  const result = await flyFoodApi.getStoreByIDV1(session, id as string)
+
+  if (!result.ok) {
+    redirect('/404')
+  }
+
+  const store = result.value
 
   const score = Number(store.score.toFixed(2)) / 100
   const badgeType = {
@@ -53,22 +65,24 @@ export default async function StorePage({
                   {badgeType[store.type]}
                 </Badge>
               )}
-              <div className="flex flex-row justify-between items-center space-x-1">
-                <Star size={18} color="#fcbb00" fill="#fcbb00" />
-                <p className="text-[#fcbb00] font-medium">
-                  {score}
-                </p>
+              <div className='flex flex-row justify-between items-center space-x-1'>
+                <Star size={18} color='#fcbb00' fill='#fcbb00' />
+                <p className='text-[#fcbb00] font-medium'>{score}</p>
                 <Drawer>
                   <DrawerTrigger>Mais informações</DrawerTrigger>
-                  <DrawerContent className="bg-white max-h-[75vh]">
+                  <DrawerContent className='bg-white max-h-[75vh]'>
                     <DrawerHeader>
                       <DrawerTitle>Sobre a {store.name}</DrawerTitle>
                     </DrawerHeader>
-                    <div className="flex-1 overflow-y-auto space-y-4 m-4">
+                    <div className='flex-1 overflow-y-auto space-y-4 m-4'>
                       <AddressSection address={store.address} />
-                      <BusinessHoursSection businessHours={store.businessHours} />
-                      <PaymentMethodsSection paymentMethods={store.paymentMethods} />
-                      <ContactSection store={store}/>
+                      <BusinessHoursSection
+                        businessHours={store.businessHours}
+                      />
+                      <PaymentMethodsSection
+                        paymentMethods={store.paymentMethods}
+                      />
+                      <ContactSection store={store} />
                     </div>
                   </DrawerContent>
                 </Drawer>

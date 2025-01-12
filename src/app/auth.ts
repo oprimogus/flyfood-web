@@ -28,9 +28,15 @@ declare module 'next-auth/jwt' {
 async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
     const baseURL = new URL(env.zitadel.issuer)
-    const conf = await openid.discovery(baseURL, env.zitadel.clientID, {}, undefined, {
-      execute: [openid.allowInsecureRequests]
-    })
+    const conf = await openid.discovery(
+      baseURL,
+      env.zitadel.clientID,
+      {},
+      undefined,
+      {
+        execute: [openid.allowInsecureRequests]
+      }
+    )
 
     if (!token.refreshToken) {
       // return {
@@ -87,7 +93,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       token.expiresAt ??= (account?.expires_at ?? 0) * 1000
       token.error = undefined
       // Return previous token if the access token has not expired yet
-      if (Date.now() < (token.expiresAt)) {
+      if (Date.now() < token.expiresAt) {
         return token
       }
 
@@ -110,6 +116,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     authorized: async ({ auth }) => {
       // Logged in users are authenticated, otherwise redirect to login page
       return !!auth
-    },
+    }
   }
 })

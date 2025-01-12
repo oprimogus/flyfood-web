@@ -1,4 +1,4 @@
-import { ApiError } from "@/service/http"
+import type { ApiError } from '@/service/http'
 
 export type FlyFoodError = ApiError & {
   traceID: string
@@ -18,7 +18,7 @@ export type FlyFoodValidationError = Omit<FlyFoodError, 'details'> & {
   details: FlyFoodFieldError[]
 }
 
-export type StoreType = 'RESTAURANT' | 'PHARMACY' | 'TOBBACO' | 'MARKET' | 'PUB'
+export type StoreType = 'RESTAURANT' | 'PHARMACY' | 'TOBBACO' | 'MARKET' | 'PUB' | 'CONVENIENCE'
 
 export type PaymentMethod = 'CREDIT' | 'DEBIT' | 'PIX' | 'CASH' | 'BTC'
 
@@ -72,8 +72,8 @@ export type QueryStore = {
   name: string
   isOpen: boolean
   score: number
-  neighborhood: string;
-  city: string;
+  neighborhood: string
+  city: string
   type: StoreType
   profileImage: string
 }
@@ -81,8 +81,9 @@ export type QueryStore = {
 export type GetStoresByFilter = {
   name?: string
   city: string
-  isOpen?: boolean,
+  isOpen?: boolean
+  score?: number
   type?: StoreType
-  page: number,
+  page: number
   maxItems: number
 }

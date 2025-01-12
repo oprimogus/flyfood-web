@@ -20,7 +20,9 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   return (
     <SessionProvider>
       <ToastProvider>
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
       </ToastProvider>
     </SessionProvider>
   )
