@@ -67,7 +67,6 @@ export default function StoreList({ session }: { session: Session }) {
       page: 1,
       maxItems: 10
     })
-    handleSubmit(onSubmit)()
   }
 
   if (isLoading) {
@@ -83,7 +82,7 @@ export default function StoreList({ session }: { session: Session }) {
       <div className='w-full h-screen flex items-center justify-center'>
         <div className='text-center space-y-4'>
           <p className='text-red-500 text-xl'>Erro ao carregar os dados.</p>
-          <Button 
+          <Button
             variant="destructive"
             onClick={() => refetch()}
           >
@@ -106,7 +105,7 @@ export default function StoreList({ session }: { session: Session }) {
       <h1 className='text-2xl font-bold text-center my-8'>
         Lojas disponíveis em {selectedAddress?.city}
       </h1>
-      
+
       {/* Mobile Filters Button */}
       <div className='lg:hidden max-w-4xl mx-auto px-4 mb-4'>
         <Sheet open={isFiltersOpen} onOpenChange={setIsFiltersOpen}>
@@ -226,7 +225,7 @@ interface FilterFormProps {
 
 function FilterForm({ formValues, register, setValue, handleSubmit, onSubmit, handleReset }: FilterFormProps) {
   const getScoreLabel = (type?: StoreType) => {
-    switch(type) {
+    switch (type) {
       case 'RESTAURANT':
       case 'PUB':
         return 'Avaliação da comida'
@@ -258,7 +257,6 @@ function FilterForm({ formValues, register, setValue, handleSubmit, onSubmit, ha
             value={formValues.type}
             onValueChange={(value: string) => {
               setValue('type', value === 'ALL' ? undefined : value as StoreType)
-              handleSubmit(onSubmit)()
             }}
           >
             <SelectTrigger className="w-full bg-background text-foreground">
@@ -280,11 +278,10 @@ function FilterForm({ formValues, register, setValue, handleSubmit, onSubmit, ha
               value={[formValues.score || 0]}
               onValueChange={([value]) => {
                 setValue('score', value)
-                handleSubmit(onSubmit)()
               }}
               max={5}
               step={0.5}
-              className="w-full"
+              className="w-full bg-yellow-400"
             />
             <div className='mt-1 text-sm text-muted-foreground'>
               {formValues.score || 0} estrelas ou mais
@@ -298,7 +295,6 @@ function FilterForm({ formValues, register, setValue, handleSubmit, onSubmit, ha
             checked={formValues.isOpen}
             onCheckedChange={(checked) => {
               setValue('isOpen', checked)
-              handleSubmit(onSubmit)()
             }}
           />
           <Label htmlFor="open-filter">Aberto agora</Label>
@@ -306,8 +302,8 @@ function FilterForm({ formValues, register, setValue, handleSubmit, onSubmit, ha
       </div>
 
       <div className='space-y-2'>
-        <Button 
-          type="button" 
+        <Button
+          type="button"
           variant="outline"
           onClick={handleReset}
           className="w-full bg-background hover:bg-accent"
