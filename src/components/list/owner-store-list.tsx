@@ -4,7 +4,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { StoreIcon, Star, Search, X, SlidersHorizontal } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useAddress, useStores } from '@/hooks/use-api'
+import { useAddress, useOwnerStores, useStores } from '@/hooks/use-api'
 import type { Session } from 'next-auth'
 import { GetStoresByFilter, StoreType } from '@/service/flyfood-api/types'
 import { Input } from '@/components/ui/input'
@@ -27,47 +27,9 @@ export const badgeType: Record<StoreType, string> = {
   TOBBACO: 'Tabacaria'
 }
 
-export default function StoreList({ session }: { session: Session }) {
-  const { selectedAddress } = useAddress(session)
-  const [isFiltersOpen, setIsFiltersOpen] = useState(false)
-  const { register, watch, setValue, handleSubmit, reset } = useForm<GetStoresByFilter>({
-    defaultValues: {
-      name: '',
-      city: selectedAddress?.city || '',
-      type: undefined,
-      isOpen: undefined,
-      score: 0,
-      page: 1,
-      maxItems: 10
-    }
-  })
+export default function OwnerStoreList({ session }: { session: Session }) {
 
-  const formValues = watch()
-
-  const { storeList, isError, isLoading, refetch } = useStores(session, formValues)
-
-  useEffect(() => {
-    if (selectedAddress?.city) {
-      setValue('city', selectedAddress.city)
-    }
-  }, [selectedAddress?.city, setValue])
-
-  const onSubmit = (data: GetStoresByFilter) => {
-    setIsFiltersOpen(false)
-    refetch()
-  }
-
-  const handleReset = () => {
-    reset({
-      name: '',
-      city: selectedAddress?.city || '',
-      type: undefined,
-      isOpen: undefined,
-      score: 0,
-      page: 1,
-      maxItems: 10
-    })
-  }
+  const { storeList, isError, isLoading, refetch } = useOwnerStores(session)
 
   if (isLoading) {
     return (
@@ -93,65 +55,10 @@ export default function StoreList({ session }: { session: Session }) {
     )
   }
 
-  const activeFiltersCount = [
-    formValues.name,
-    formValues.type,
-    formValues.isOpen,
-    formValues.score && formValues.score > 0
-  ].filter(Boolean).length
-
   return (
     <div className='container mx-auto'>
-      <h1 className='text-2xl font-bold text-center my-8'>
-        Lojas disponíveis em {selectedAddress?.city}
-      </h1>
-
-      {/* Mobile Filters Button */}
-      <div className='lg:hidden max-w-4xl mx-auto px-4 mb-4'>
-        <Sheet open={isFiltersOpen} onOpenChange={setIsFiltersOpen}>
-          <SheetTrigger asChild>
-            <Button variant="outline" className="w-full bg-background hover:bg-accent">
-              <SlidersHorizontal className="mr-2 h-4 w-4" />
-              Filtros
-              {activeFiltersCount > 0 && (
-                <Badge variant="secondary" className="ml-2 bg-muted text-muted-foreground">
-                  {activeFiltersCount}
-                </Badge>
-              )}
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-full sm:max-w-lg border-r">
-            <SheetHeader>
-              <SheetTitle>Filtros</SheetTitle>
-            </SheetHeader>
-            <FilterForm
-              formValues={formValues}
-              register={register}
-              setValue={setValue}
-              handleSubmit={handleSubmit}
-              onSubmit={onSubmit}
-              handleReset={handleReset}
-            />
-          </SheetContent>
-        </Sheet>
-      </div>
 
       <div className='max-w-7xl mx-auto p-4 flex flex-col lg:flex-row gap-8'>
-        {/* Desktop Filters */}
-        <div className='hidden lg:block w-64 space-y-6'>
-          <Card className="p-4 border bg-card text-card-foreground">
-            <CardContent className="p-0">
-              <FilterForm
-                formValues={formValues}
-                register={register}
-                setValue={setValue}
-                handleSubmit={handleSubmit}
-                onSubmit={onSubmit}
-                handleReset={handleReset}
-              />
-            </CardContent>
-          </Card>
-        </div>
 
         {/* Results */}
         <div className='flex-1'>

@@ -24,9 +24,9 @@ export default function MobileMenu({ session }: MobileMenuProps) {
           <Link href='/stores' className='text-lg'>
             Lojas
           </Link>
-          {session.user.role === 'OWNER' && (
-            <Link href='/business' className='text-lg'>
-              Meu Negócio
+          {session.user.roles && session.user.roles.includes('owner') && (
+            <Link href='/dashboard' className='text-lg'>
+              Gerenciar minhas lojas
             </Link>
           )}
           <Button

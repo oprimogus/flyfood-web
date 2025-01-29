@@ -7,6 +7,7 @@ import type {
   FlyFoodError,
   FlyFoodValidationError,
   GetStoresByFilter,
+  QueryOwnerStoreList,
   QueryStore,
   Store
 } from './types'
@@ -106,7 +107,6 @@ export class FlyFoodApi {
     if (params.page) queryParams.page = String(params.page)
     if (params.maxItems) queryParams.maxItems = String(params.maxItems)
 
-    console.log('queryParams: ', queryParams)
     return await fetchApi<QueryStore[], FlyFoodValidationError>(
       this.baseURL,
       '/v1/store',
@@ -120,6 +120,21 @@ export class FlyFoodApi {
       }
     )
   }
+
+  async getOwnerStoresV1(session: Session): Promise<Result<QueryOwnerStoreList[], FlyFoodError>> {
+    return await fetchApi<QueryOwnerStoreList[], FlyFoodError>(
+      this.baseURL,
+      '/v1/owner/store/all',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.user.accessToken}`
+        }
+      }
+    )
+  }
+
 }
 
 export const flyFoodApi = FlyFoodApi.getInstance()

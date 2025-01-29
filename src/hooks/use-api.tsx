@@ -64,7 +64,6 @@ export function useAddress(session: Session) {
       setSelectedAddress(addresses[0])
     } 
   }, [addresses, selectedAddress])
-  console.log('address selected: ', selectedAddress)
   return { addresses, selectedAddress, setSelectedAddress }
 }
 
@@ -240,6 +239,23 @@ export function useStores(session: Session, params: GetStoresByFilter) {
     },
     staleTime: 1 * 1000 * 60,
     enabled: Boolean(params.city)
+  })
+
+  return { storeList, isError, isLoading, refetch }
+}
+
+export function useOwnerStores(session: Session) {
+  const {
+    data: storeList,
+    isError,
+    isLoading,
+    refetch
+  } = useQuery({
+    queryKey: [`owner-stores`],
+    queryFn: async () => {
+      return flyFoodApi.getOwnerStoresV1(session)
+    },
+    staleTime: 1 * 1000 * 60,
   })
 
   return { storeList, isError, isLoading, refetch }

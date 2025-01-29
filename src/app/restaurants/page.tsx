@@ -9,6 +9,7 @@ export default async function RestaurantListPage() {
   if (!session) {
     redirect('/')
   }
+
   return (
     <>
       <LoggedHeader session={session} />

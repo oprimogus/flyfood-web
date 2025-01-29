@@ -22,6 +22,8 @@ export type StoreType = 'RESTAURANT' | 'PHARMACY' | 'TOBBACO' | 'MARKET' | 'PUB'
 
 export type PaymentMethod = 'CREDIT' | 'DEBIT' | 'PIX' | 'CASH' | 'BTC'
 
+export type ProductType = 'FOOD' | 'WATER'
+
 export type Address = {
   name: string
   addressLine1: string
@@ -65,6 +67,7 @@ export type Store = {
   headerImage: string
   businessHours: BusinessHours[]
   paymentMethods: PaymentMethod[]
+  products: ProductDTO[]
 }
 
 export type QueryStore = {
@@ -78,6 +81,20 @@ export type QueryStore = {
   profileImage: string
 }
 
+export type QueryOwnerStoreList = {
+  id: string
+  name: string
+  active: boolean
+  isOpen: boolean
+  score: number
+  type: StoreType
+  profileImage?: string
+  city: string
+  state: string
+  country: string
+}
+
+
 export type GetStoresByFilter = {
   name?: string
   city: string
@@ -87,3 +104,18 @@ export type GetStoresByFilter = {
   page: number
   maxItems: number
 }
+
+export type ProductDTO = {
+  id: string
+  SKU: string
+  promo_active: boolean
+  type: ProductType
+  tag: string
+  name: string
+  description: string
+  score: number
+  image: string
+  details: Record<string, any>
+  price: number
+}
+

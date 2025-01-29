@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Store as StoreIcon } from 'lucide-react'
 import type { Store } from '@/service/flyfood-api/types'
+import Image from "next/image"
 
 interface StoreHeaderProps {
   store: Store
@@ -8,16 +9,17 @@ interface StoreHeaderProps {
 
 export default function StoreHeader({ store }: StoreHeaderProps) {
   return (
-    <div className='relative w-full overflow-hidden rounded-t-lg h-48 lg:h-64'>
-      {!store.headerImage && (
-        <div className='w-full h-full bg-gradient-to-r from-red-200 to-red-500 flex items-center justify-center'></div>
-      )}
-      {store.headerImage && (
-        <img
-          alt='store header'
-          className='w-full h-full object-cover'
+    <div className="relative w-full overflow-hidden rounded-t-lg h-48 lg:h-64">
+      {!store.headerImage ? (
+        <div className="w-full h-full bg-gradient-to-r from-red-200 to-red-500 flex items-center justify-center">
+        </div>
+      ) : (
+        <Image
           src={store.headerImage}
-          loading='lazy'
+          alt={store.name}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover md:object-contain transition-transform hover:scale-105"
         />
       )}
 
@@ -29,10 +31,7 @@ export default function StoreHeader({ store }: StoreHeaderProps) {
               <StoreIcon className='w-14 h-14 text-white' />
             </AvatarFallback>
           </Avatar>
-          <div>
-            <h1 className='text-3xl font-bold text-white mb-1'>{store.name}</h1>
-            <p className='text-gray-200'>{store.description}</p>
-          </div>
+          <h1 className='text-3xl font-bold text-white mb-1'>{store.name}</h1>
         </div>
       </div>
     </div>

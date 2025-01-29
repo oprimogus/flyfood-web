@@ -11,3 +11,10 @@ export const debounce = (func: Function, wait: number) => {
     timeout = setTimeout(later, wait)
   }
 }
+
+export const formatCurrency = (value: number, currency: string = "BRL", locale: string = "pt-br"): string => {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency
+  }).format(value / 100)
+}
