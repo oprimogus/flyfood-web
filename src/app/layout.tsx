@@ -1,23 +1,23 @@
 import type { Metadata } from 'next'
-import localFont from 'next/font/local'
+import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
+import Footer from '@/components/footer/footer'
 import { Providers } from '@/providers/providers'
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from 'sonner'
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
+const geistSans = Geist({
   variable: '--font-geist-sans',
-  weight: '100 900'
+  subsets: ['latin']
 })
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
+
+const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
-  weight: '100 900'
+  subsets: ['latin']
 })
 
 export const metadata: Metadata = {
   title: 'FlyFood',
-  description: 'As melhores lojas da sua região em um só lugar',
+  description: 'As melhores lojas da sua região em um só lugar'
 }
 
 export default function RootLayout({
@@ -26,12 +26,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='pt-BR'>
+    <html lang='en' data-theme='firstTheme'>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>{children}</Providers>
-        <Toaster />
+        <Providers>
+          <Toaster richColors position='bottom-center' expand={true} />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   )

@@ -18,7 +18,13 @@ export type FlyFoodValidationError = Omit<FlyFoodError, 'details'> & {
   details: FlyFoodFieldError[]
 }
 
-export type StoreType = 'RESTAURANT' | 'PHARMACY' | 'TOBBACO' | 'MARKET' | 'PUB' | 'CONVENIENCE'
+export type StoreType =
+  | 'RESTAURANT'
+  | 'PHARMACY'
+  | 'TOBBACO'
+  | 'MARKET'
+  | 'PUB'
+  | 'CONVENIENCE'
 
 export type PaymentMethod = 'CREDIT' | 'DEBIT' | 'PIX' | 'CASH' | 'BTC'
 
@@ -54,7 +60,7 @@ export type BusinessHours = {
   closingTime: string
 }
 
-export type Store = {
+export type QueryStore = {
   id: string
   name: string
   description: string
@@ -67,10 +73,10 @@ export type Store = {
   headerImage: string
   businessHours: BusinessHours[]
   paymentMethods: PaymentMethod[]
-  products: ProductDTO[]
+  products: Product[]
 }
 
-export type QueryStore = {
+export type QueryStoreList = {
   id: string
   name: string
   isOpen: boolean
@@ -79,6 +85,16 @@ export type QueryStore = {
   city: string
   type: StoreType
   profileImage: string
+}
+
+export type GetStoresByFilterInput = {
+  name?: string
+  city: string
+  isOpen?: boolean
+  score?: number
+  type?: StoreType
+  page: number
+  maxItems: number
 }
 
 export type QueryOwnerStoreList = {
@@ -94,28 +110,36 @@ export type QueryOwnerStoreList = {
   country: string
 }
 
-
-export type GetStoresByFilter = {
-  name?: string
-  city: string
-  isOpen?: boolean
-  score?: number
-  type?: StoreType
-  page: number
-  maxItems: number
+export type QueryOwnerStore = {
+  id: string
+  name: string
+  description: string
+  isOpen: boolean
+  phone: string
+  score: number
+  address: Address
+  type: StoreType
+  profileImage?: string
+  headerImage?: string
+  businessHours: BusinessHours[]
+  paymentMethods: PaymentMethod[]
+  products: Product[]
 }
 
-export type ProductDTO = {
+export type Product = {
   id: string
+  storeId: string
   SKU: string
+  active: boolean
   promo_active: boolean
   type: ProductType
   tag: string
   name: string
   description: string
+  stock_quantity?: number
   score: number
-  image: string
-  details: Record<string, any>
+  image?: string
+  details?: Record<string, unknown>
   price: number
+  promotional_price: number
 }
-

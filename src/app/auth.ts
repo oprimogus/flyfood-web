@@ -1,20 +1,24 @@
-import { env } from '@/config/env'
+import { Environment, env } from '@/config/env'
+import {
+  type ZitadelRole,
+  type ZitadelUserInfo,
+  isValidRole
+} from '@/service/zitadel/types'
+import * as jose from 'jose'
 import NextAuth from 'next-auth'
 import type { JWT } from 'next-auth/jwt'
 import ZITADEL from 'next-auth/providers/zitadel'
-import type { AdapterUser } from 'next-auth/adapters'
 import * as openid from 'openid-client'
-import { ZitadelApi } from '@/service/zitadel/service'
 
 declare module 'next-auth' {
   interface Session {
     user: {
-      id: string // ID do usuário
-      email: string // Email do usuário
-      name: string // Nome do usuário
-      roles?: string[] // Role personalizada
+      id: string
+      email: string
+      name: string
+      roles?: ZitadelRole[]
       accessToken: string
-      // Adicione mais campos conforme necessário
+      idToken: string
     }
   }
 }
@@ -22,33 +26,29 @@ declare module 'next-auth' {
 declare module 'next-auth/jwt' {
   interface JWT {
     accessToken?: string
+    idToken?: string
     refreshToken?: string
     expiresAt: number
-  }
-}
-
-declare module 'next-auth/adapters' {
-  interface AdapterUser {
-    'urn:zitadel:iam:org:project:roles'?: {
-      [role: string]: {
-        [key: string]: string
-      }
-    }
   }
 }
 
 async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
     const baseURL = new URL(env.zitadel.issuer)
-    const conf = await openid.discovery(
-      baseURL,
-      env.zitadel.clientID,
-      {},
-      undefined,
-      {
-        execute: [openid.allowInsecureRequests]
-      }
-    )
+    let conf: openid.Configuration
+    if (env.environment === Environment.Production) {
+      conf = await openid.discovery(baseURL, env.zitadel.clientID, {})
+    } else {
+      conf = await openid.discovery(
+        baseURL,
+        env.zitadel.clientID,
+        {},
+        undefined,
+        {
+          execute: [openid.allowInsecureRequests]
+        }
+      )
+    }
 
     if (!token.refreshToken) {
       return signIn('zitadel')
@@ -59,6 +59,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
     return {
       ...token,
       accessToken: access_token,
+      idToken: id_token,
       expiresAt: (expires_in ?? 0) * 1000,
       refreshToken: refresh_token
     }
@@ -72,21 +73,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [
-    ZITADEL({
-      clientId: env.zitadel.clientID,
-      clientSecret: env.zitadel.clientSecret,
-      issuer: env.zitadel.issuer,
-      authorization: {
-        params: {
-          scope: 'openid profile email phone urn:zitadel:iam:user:metadata urn:zitadel:iam:org:project:roles'
-        }
-      },
-      async profile(profile) {
-        return { ...profile }
-      }
-    })
-  ],
+  providers: [ZITADEL],
   callbacks: {
     signIn({ account }) {
       if (account?.provider === 'zitadel') {
@@ -94,38 +81,35 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return false
     },
-    jwt({ token, account, user }) {
-      token.accessToken ??= account?.access_token
-      token.refreshToken ??= account?.refresh_token
-      token.expiresAt ??= (account?.expires_at ?? 0) * 1000
-      token.error = undefined
+    async jwt({ token, account }) {
+      if (account) {
+        token.accessToken = account.access_token
+        token.idToken = account.id_token
+        token.expiresAt = (account.expires_at ?? 0) * 1000
+      }
       if (Date.now() < token.expiresAt) {
         return token
       }
       return refreshAccessToken(token)
     },
     async session({ session, token, user }) {
-      if (Date.now() > token.expiresAt) {
-        throw new Error('Session expired')
+      session.user.accessToken = token.accessToken ?? ''
+      session.user.idToken = token.idToken ?? ''
+      const userInfo = jose.decodeJwt(session.user.idToken) as ZitadelUserInfo
+      const rolesSet = new Set<ZitadelRole>()
+      for (const [key, value] of Object.entries(userInfo)) {
+        if (
+          key.startsWith('urn:zitadel:iam:org:project:') &&
+          key.endsWith(':roles')
+        ) {
+          for (const role of Object.keys(value as Record<string, unknown>)) {
+            if (isValidRole(role)) {
+              rolesSet.add(role as ZitadelRole)
+            }
+          }
+        }
       }
-
-      const userInfo = await ZitadelApi.getInstance().getUserInfoV1(token.accessToken as string)
-      if (!userInfo.ok) {
-        throw new Error('Error fetching user info')
-      }
-      const roles: string[] = []
-      const zitadelRoles = userInfo.value['urn:zitadel:iam:org:project:roles']
-      if (zitadelRoles) {
-        roles.push(...Object.keys(zitadelRoles))
-      }
-      session.user = {
-        ...user,
-        id: user?.id,
-        email: user?.email,
-        name: user?.name ?? '',
-        accessToken: token.accessToken ?? '',
-        roles: roles
-      }
+      session.user.roles = Array.from(rolesSet)
       return session
     },
     authorized: async ({ auth }) => {

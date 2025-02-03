@@ -1,166 +1,127 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Check, Utensils, Clock, TrendingUp } from 'lucide-react';
-import Header from '@/components/header/header-home';
-import LoggedHeader from '@/components/header/logged-header';
-import { auth } from './auth';
+import NavHome from '@/components/nav/nav-home'
+import Image from 'next/image'
 
-export default async function Root() {
-  const session = await auth()
-
+export default function Home() {
   return (
-    <main className="min-h-screen bg-white">
-      {session?.user ? <LoggedHeader session={session} /> : <Header />}
-      
-      {/* Seção Hero */}
-      <section className="bg-gradient-to-br from-red-50 to-orange-50 py-16 px-4">
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between">
-          <div className="lg:w-1/2 space-y-6">
-            <h1 className="text-5xl font-bold text-gray-900">
-              Expanda seu Negócio com Pedidos Online
+    <main className='bg-base-100 text-base-content'>
+      <NavHome />
+
+      {/* Hero Section */}
+      <section className='hero min-h-screen bg-primary-content'>
+        <div className='hero-content flex-col lg:flex-row-reverse'>
+          <Image
+            src='/flyfood/ilustration/undraw_deliveries_2m9t.svg'
+            alt='Delivery App Showcase'
+            width={600}
+            height={400}
+            className='max-w-sm rounded-lg'
+          />
+          <div className='flex flex-col '>
+            <h1 className='text-5xl font-bold'>
+              Transforme Seu Negócio com Pedidos Online
             </h1>
-            <p className="text-xl text-gray-600">
-              Entre para o FlyFood e conecte-se com clientes em busca de experiências gastronômicas incríveis.
+            <p className='py-6 text-lg'>
+              Gerencie sua loja de forma simples, sem taxas abusivas. Cadastre
+              seus produtos, receba pedidos e pagamentos diretamente dos seus
+              clientes.
             </p>
-            <div className="flex gap-4">
-              <Button size="lg" className="bg-red-600 hover:bg-red-700">
-                Começar Agora
-              </Button>
-              <Button size="lg" variant="outline">
-                Saiba Mais
-              </Button>
-            </div>
-          </div>
-          <div className="lg:w-1/2 mt-8 lg:mt-0">
-            <img 
-              src="/api/placeholder/600/400" 
-              alt="Preview do painel de controle" 
-              className="rounded-lg shadow-xl"
-            />
+            <button type='button' className='btn btn-primary btn-lg'>
+              Comece Agora
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Seção de Recursos */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Por que escolher o FlyFood?
+      {/* Benefícios */}
+      <section className='hero min-h-screen bg-base-300'>
+        <div className='container mx-auto px-4'>
+          <h2 className='text-4xl font-bold text-center mb-12'>
+            Por que Escolher Nossa Plataforma?
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="border-none shadow-lg">
-              <CardContent className="pt-6 text-center">
-                <div className="mb-4 flex justify-center">
-                  <TrendingUp className="w-12 h-12 text-red-600" />
+          <div className='grid md:grid-cols-3 gap-8'>
+            {[
+              {
+                title: 'Sem Taxas Abusivas',
+                desc: 'Nosso modelo de assinatura permite que você economize e aumente seus lucros sem perder dinheiro com comissões exageradas.'
+              },
+              {
+                title: 'Controle Total',
+                desc: 'Gerencie pedidos, estoque e cardápio com facilidade, mantendo controle total sobre sua operação.'
+              },
+              {
+                title: 'Pagamentos Diretos',
+                desc: 'Receba diretamente via Pix, cartão ou dinheiro, sem intermediários que reduzam seu faturamento.'
+              }
+            ].map((benefit, index) => (
+              <div
+                key={benefit.title}
+                className='card bg-primary text-base-100 shadow-xl'
+              >
+                <div className='card-body'>
+                  <h3 className='card-title text-2xl font-semibold'>
+                    {benefit.title}
+                  </h3>
+                  <p>{benefit.desc}</p>
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Crescimento Garantido</h3>
-                <p className="text-gray-600">
-                  Alcance mais clientes e aumente seu faturamento com nossa plataforma
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="border-none shadow-lg">
-              <CardContent className="pt-6 text-center">
-                <div className="mb-4 flex justify-center">
-                  <Clock className="w-12 h-12 text-red-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Gestão Simplificada</h3>
-                <p className="text-gray-600">
-                  Painel intuitivo para gerenciar pedidos e cardápio
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="border-none shadow-lg">
-              <CardContent className="pt-6 text-center">
-                <div className="mb-4 flex justify-center">
-                  <Utensils className="w-12 h-12 text-red-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Cardápio Personalizado</h3>
-                <p className="text-gray-600">
-                  Apresente seus pratos com fotos e descrições atraentes
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Seção de Planos */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Escolha seu Plano
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="border-none shadow-lg">
-              <CardContent className="pt-6">
-                <h3 className="text-xl font-semibold mb-2">Pequenos Negócios</h3>
-                <p className="text-3xl font-bold mb-4">R$ 149<span className="text-lg text-gray-600">/mês</span></p>
-                <ul className="space-y-3">
-                  {['Até 100 pedidos/mês', 'Análises básicas', 'Suporte por email'].map((feature) => (
-                    <li key={feature} className="flex items-center">
-                      <Check className="w-5 h-5 text-green-500 mr-2" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button className="w-full mt-6">Começar</Button>
-              </CardContent>
-            </Card>
-            <Card className="border-none shadow-lg relative">
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-red-600 text-white px-4 py-1 rounded-full text-sm">
-                  Mais Popular
-                </span>
               </div>
-              <CardContent className="pt-6">
-                <h3 className="text-xl font-semibold mb-2">Médios Negócios</h3>
-                <p className="text-3xl font-bold mb-4">R$ 399<span className="text-lg text-gray-600">/mês</span></p>
-                <ul className="space-y-3">
-                  {['Até 500 pedidos/mês', 'Análises avançadas', 'Suporte 24/7', 'Marca personalizada'].map((feature) => (
-                    <li key={feature} className="flex items-center">
-                      <Check className="w-5 h-5 text-green-500 mr-2" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button className="w-full mt-6 bg-red-600">Começar</Button>
-              </CardContent>
-            </Card>
-            <Card className="border-none shadow-lg">
-              <CardContent className="pt-6">
-                <h3 className="text-xl font-semibold mb-2">Empresarial</h3>
-                <p className="text-3xl font-bold mb-4">R$ 999<span className="text-lg text-gray-600">/mês</span></p>
-                <ul className="space-y-3">
-                  {['Pedidos ilimitados', 'Análises personalizadas', 'Suporte prioritário', 'Acesso à API', 'Múltiplas unidades'].map((feature) => (
-                    <li key={feature} className="flex items-center">
-                      <Check className="w-5 h-5 text-green-500 mr-2" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button className="w-full mt-6">Começar</Button>
-              </CardContent>
-            </Card>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Seção CTA */}
-      <section className="py-16 px-4 bg-red-600 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Pronto para fazer seu restaurante crescer?
+      {/* Como Funciona */}
+      <section className='hero min-h-screen bg-base-200'>
+        <div className='container mx-auto px-4'>
+          <h2 className='text-4xl font-bold text-center mb-12'>
+            Como Funciona?
           </h2>
-          <p className="text-xl mb-8">
-            Junte-se a milhares de restaurantes de sucesso que já usam o FlyFood
+          <div className='grid md:grid-cols-4 gap-8'>
+            {[
+              {
+                title: '1. Cadastre sua Loja',
+                desc: 'Crie sua conta, personalize sua loja e adicione seus produtos de forma rápida e intuitiva.'
+              },
+              {
+                title: '2. Configure seu Cardápio',
+                desc: 'Defina categorias, preços e horários de funcionamento conforme suas necessidades.'
+              },
+              {
+                title: '3. Comece a Receber Pedidos',
+                desc: 'Seus clientes acessam seu menu e fazem pedidos de forma fácil e rápida.'
+              },
+              {
+                title: '4. Lucro Direto',
+                desc: 'Receba os pagamentos sem intermediários e aumente sua margem de lucro.'
+              }
+            ].map((step, index) => (
+              <div
+                key={step.title}
+                className='card bg-primary text-white shadow-xl'
+              >
+                <div className='card-body'>
+                  <h3 className='card-title text-xl font-semibold'>
+                    {step.title}
+                  </h3>
+                  <p>{step.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Chamada Final */}
+      <section className='hero min-h-screen py-20 bg-base-300 text-base-content text-center'>
+        <div className='container mx-auto px-4'>
+          <h2 className='text-4xl font-bold mb-4'>Pronto para Crescer?</h2>
+          <p className='text-lg mb-8'>
+            Cadastre-se agora e comece a vender online sem complicações.
           </p>
-          <Button size="lg" variant="secondary" className="bg-white text-red-600 hover:bg-gray-100">
-            Comece Seu Período Gratuito
-          </Button>
+          <button type='button' className='btn btn-primary btn-lg'>
+            Criar Minha Loja Agora
+          </button>
         </div>
       </section>
     </main>
-  );
+  )
 }

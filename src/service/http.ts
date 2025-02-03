@@ -9,7 +9,7 @@ export type ApiError = {
 }
 
 export type FetchOptions = RequestInit & {
-  requestBody?: Object
+  requestBody?: unknown
   query?: Record<string, string>
 }
 
@@ -50,12 +50,18 @@ export async function fetchApi<T = void, E = ApiError>(
     }
 
     return { ok: true, value: (responseBody as T) || (undefined as T) }
-  } catch (error: any) {
+  } catch (error: unknown) {
+    let errorMessage = 'Network error'
+
+    if (error instanceof Error) {
+      errorMessage = error.message
+    }
+
     return {
       ok: false,
       error: {
         code: 'FETCH_ERROR',
-        message: error.message || 'Network error',
+        message: errorMessage,
         exception: error
       } as E
     }

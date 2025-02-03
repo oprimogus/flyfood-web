@@ -1,22 +1,30 @@
 import { env } from '@/config/env'
+import { type Result, fetchApi } from '../http'
 import type { AddressViaCep } from './types'
 
-const client = {
-  baseURL: env.clients.viacep.baseURL
-}
+export class ViaCEPApi {
+  private static instance: ViaCEPApi
+  private readonly baseURL = env.clients.viacep.baseURL
 
-export const getCEP = async (cep: string): Promise<AddressViaCep> => {
-  const req = await fetch(`${client.baseURL}/ws/${cep}/json/`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
+  private constructor() {}
+
+  public static getInstance(): ViaCEPApi {
+    if (!ViaCEPApi.instance) {
+      ViaCEPApi.instance = new ViaCEPApi()
     }
-  })
 
-  if (!req.ok) {
-    const errorData = await req.json()
-    throw new Error(`Error fetching viacep data: ${JSON.stringify(errorData)}`)
+    return ViaCEPApi.instance
   }
 
-  return await req.json()
+  async getCEP(cep: string): Promise<Result<AddressViaCep, unknown>> {
+    return await fetchApi<AddressViaCep, unknown>(
+      this.baseURL,
+      `/ws/${cep}/json/`,
+      {
+        method: 'GET'
+      }
+    )
+  }
 }
+
+export const viaCepApi = ViaCEPApi.getInstance()

@@ -1,4 +1,12 @@
+export enum Environment {
+  Production = 'production',
+  Staging = 'staging',
+  Development = 'development',
+  Testing = 'testing'
+}
+
 export const env = {
+  environment: Environment.Staging,
   zitadel: {
     issuer: process.env.AUTH_ZITADEL_ISSUER ?? '',
     clientID: process.env.AUTH_ZITADEL_ID ?? '',

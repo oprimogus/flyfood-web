@@ -6,11 +6,35 @@ import type {
   Customer,
   FlyFoodError,
   FlyFoodValidationError,
-  GetStoresByFilter,
+  GetStoresByFilterInput,
+  QueryOwnerStore,
   QueryOwnerStoreList,
   QueryStore,
-  Store
+  QueryStoreList
 } from './types'
+
+export function handleApiError(error: unknown): FlyFoodError {
+  try {
+    if (error instanceof Error) {
+      return JSON.parse(error.message) as FlyFoodError
+    }
+    return {
+      message: 'Ocorreu um erro inesperado',
+      error: 'Ocorreu um erro inesperado',
+      details: [],
+      code: '500',
+      traceID: 'unknown'
+    }
+  } catch {
+    return {
+      message: 'Ocorreu um erro inesperado',
+      error: 'Ocorreu um erro inesperado',
+      details: [],
+      code: '500',
+      traceID: 'unknown'
+    }
+  }
+}
 
 export class FlyFoodApi {
   private static instance: FlyFoodApi
@@ -81,8 +105,8 @@ export class FlyFoodApi {
   async getStoreByIDV1(
     session: Session,
     id: string
-  ): Promise<Result<Store, FlyFoodError>> {
-    return await fetchApi<Store, FlyFoodError>(
+  ): Promise<Result<QueryStore, FlyFoodError>> {
+    return await fetchApi<QueryStore, FlyFoodError>(
       this.baseURL,
       `/v1/store/${id}`,
       {
@@ -97,8 +121,8 @@ export class FlyFoodApi {
 
   async getStoreByFilterV1(
     session: Session,
-    params: GetStoresByFilter
-  ): Promise<Result<QueryStore[], FlyFoodValidationError>> {
+    params: GetStoresByFilterInput
+  ): Promise<Result<QueryStoreList[], FlyFoodValidationError>> {
     const queryParams: Record<string, string> = {}
     if (params.name) queryParams.name = params.name
     if (params.city) queryParams.city = params.city
@@ -107,7 +131,7 @@ export class FlyFoodApi {
     if (params.page) queryParams.page = String(params.page)
     if (params.maxItems) queryParams.maxItems = String(params.maxItems)
 
-    return await fetchApi<QueryStore[], FlyFoodValidationError>(
+    return await fetchApi<QueryStoreList[], FlyFoodValidationError>(
       this.baseURL,
       '/v1/store',
       {
@@ -121,7 +145,9 @@ export class FlyFoodApi {
     )
   }
 
-  async getOwnerStoresV1(session: Session): Promise<Result<QueryOwnerStoreList[], FlyFoodError>> {
+  async getOwnerStoresV1(
+    session: Session
+  ): Promise<Result<QueryOwnerStoreList[], FlyFoodError>> {
     return await fetchApi<QueryOwnerStoreList[], FlyFoodError>(
       this.baseURL,
       '/v1/owner/store/all',
@@ -135,6 +161,23 @@ export class FlyFoodApi {
     )
   }
 
+  async getOwnerStoreByIDV1(
+    session: Session,
+    id: string
+  ): Promise<Result<QueryOwnerStore, FlyFoodError>> {
+    console.log('session: ', session)
+    return await fetchApi<QueryOwnerStore, FlyFoodError>(
+      this.baseURL,
+      `/v1/owner/store/${id}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.user.accessToken}`
+        }
+      }
+    )
+  }
 }
 
 export const flyFoodApi = FlyFoodApi.getInstance()

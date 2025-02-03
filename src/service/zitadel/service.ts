@@ -1,7 +1,7 @@
-import { env } from "@/config/env"
-import { fetchApi } from "../http"
-import { Session } from "next-auth"
-import { ZitadelUserInfo } from "./types"
+import { env } from '@/config/env'
+import { Session } from 'next-auth'
+import { fetchApi } from '../http'
+import type { ZitadelUserInfo } from './types'
 
 export class ZitadelApi {
   private static instance: ZitadelApi
@@ -18,7 +18,7 @@ export class ZitadelApi {
   }
 
   async getUserInfoV1(accessToken: string) {
-    return await fetchApi<ZitadelUserInfo, any>(
+    return await fetchApi<ZitadelUserInfo, unknown>(
       this.baseURL,
       '/oidc/v1/userinfo',
       {
@@ -31,3 +31,5 @@ export class ZitadelApi {
     )
   }
 }
+
+export const zitadelApi = ZitadelApi.getInstance()
