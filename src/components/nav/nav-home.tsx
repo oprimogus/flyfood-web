@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 export default function NavHome() {
   return (
-    <nav className='navbar bg-base-100 justify-between shadow-md sticky top-0 z-50'>
+    <nav className='w-screen navbar bg-base-100 justify-between shadow-md sticky top-0 z-50'>
       <Link href='/' className='flex items-center space-x-3'>
         <div className='h-10 w-10 relative'>
           <Image

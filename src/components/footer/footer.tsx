@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export default function Footer() {
   return (
-    <footer className='footer footer-center bg-primary text-base-100 p-10'>
+    <footer className='footer footer-center w-screen bg-primary text-base-100 p-10'>
       <aside>
         <Image
           src='/flyfood/logo/flyfood-white.svg'

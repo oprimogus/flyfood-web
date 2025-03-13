@@ -32,8 +32,6 @@ export default function ModalDeleteAddress({ addr }: Props) {
       <dialog
         ref={modalRef}
         className='modal'
-        aria-labelledby='modal-title'
-        aria-hidden='true'
       >
         <div className='modal-box justify-items-center max-w-screen-[70vh] overflow-y-auto space-y-2'>
           <form method='dialog'>
@@ -56,7 +54,7 @@ export default function ModalDeleteAddress({ addr }: Props) {
                 <button
                   type='button'
                   className='btn btn-secondary w-24'
-                  onClick={() => openModal()}
+                  onClick={() => closeModal()}
                 >
                   Não
                 </button>

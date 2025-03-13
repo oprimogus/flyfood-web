@@ -8,8 +8,7 @@ export default function ModalAddress() {
   const { 
     selectedAddress, 
     addresses, 
-    customerLoading, 
-    setSelectAddress } = useAddress()
+    setSelectedAddress } = useAddress()
   const modalRef = useRef<HTMLDialogElement>(null)
 
   const openModal = () => modalRef.current?.showModal()
@@ -25,17 +24,14 @@ export default function ModalAddress() {
         className='btn'
         type='button'
         onClick={openModal}
-        disabled={customerLoading}
       >
-        {customerLoading ? 'Carregando...' : displayedAddress}
+        {displayedAddress ?? 'Carregando...'}
       </button>
 
       {/* Modal */}
       <dialog
         ref={modalRef}
         className='modal'
-        aria-labelledby='modal-title'
-        aria-hidden='true'
       >
         <div className='modal-box justify-items-center max-w-screen-[70vh] overflow-y-auto'>
           <form method='dialog'>
@@ -51,9 +47,9 @@ export default function ModalAddress() {
           </h3>
 
           {/* Verifica erro ou lista os endereços */}
-          {customerLoading && <p className='py-4'>Carregando endereços...</p>}
+          {/* {isLoading && <p className='py-4'>Carregando endereços...</p>} */}
 
-          {!customerLoading && addresses?.length ? (
+          {addresses?.length ? (
             <ul className='py-4'>
               {addresses.map((address, i) => (
                 <li
@@ -63,7 +59,7 @@ export default function ModalAddress() {
                   <ModalDeleteAddress addr={address} />
                   <button
                     type='button'
-                    onClick={() => setSelectAddress(address)}
+                    onClick={() => setSelectedAddress(address)}
                     className='btn card bg-base-200 w-full h-full'
                   >
                     <h2 className='card-title'>{address.name}</h2>

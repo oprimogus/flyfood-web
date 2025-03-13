@@ -43,13 +43,6 @@ export default async function AuthenticatedLayout({
   }
 
   return (
-    // <html lang="en" data-theme="firstTheme">
-    //   <body
-    //     className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-    //   >
-
-    //   </body>
-    // </html>
     <>
       <NavLogged />
       {children}

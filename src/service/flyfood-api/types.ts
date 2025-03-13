@@ -26,6 +26,15 @@ export type StoreType =
   | 'PUB'
   | 'CONVENIENCE'
 
+export const storeTypeList: Record<StoreType, string> = {
+  CONVENIENCE: 'Conveniência',
+  MARKET: 'Mercado',
+  PHARMACY: 'Farmácia',
+  PUB: 'Bar',
+  RESTAURANT: 'Restaurante',
+  TOBBACO: 'Tabacaria'
+}
+
 export type PaymentMethod = 'CREDIT' | 'DEBIT' | 'PIX' | 'CASH' | 'BTC'
 
 export type ProductType = 'FOOD' | 'WATER'

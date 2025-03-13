@@ -3,14 +3,14 @@ import Image from 'next/image'
 
 export default function Home() {
   return (
-    <main className='bg-base-100 text-base-content'>
+    <main className='min-w-full bg-base-100 text-base-content'>
       <NavHome />
 
       {/* Hero Section */}
       <section className='hero min-h-screen bg-primary-content'>
         <div className='hero-content flex-col lg:flex-row-reverse'>
           <Image
-            src='/flyfood/ilustration/undraw_deliveries_2m9t.svg'
+            src='flyfood/ilustration/deliveries.svg'
             alt='Delivery App Showcase'
             width={600}
             height={400}
