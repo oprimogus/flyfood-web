@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export default function Home() {
   return (
-    <main className='min-w-full bg-base-100 text-base-content'>
+    <main className='w-full bg-base-100 text-base-content'>
       <NavHome />
 
       {/* Hero Section */}

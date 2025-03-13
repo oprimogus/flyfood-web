@@ -1,3 +1,58 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "daisyui" {
+    themes: meutema;
+}
+@plugin "daisyui/theme" {
+  name: "meutema";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+  
+  /* Cores base */
+  --color-base-100: #FDFFFC;
+  --color-base-200: #f5f7f6;
+  --color-base-300: #e8eae9;
+  --color-base-content: #011627;
+  
+  /* Cores principais */
+  --color-primary: #F42C04;
+  --color-primary-content: #FDFFFC;
+  
+  /* Cores secundárias */
+  --color-secondary: #66101F;
+  --color-secondary-content: #FDFFFC;
+  
+  /* Cores de destaque */
+  --color-accent: #E6AF2E;
+  --color-accent-content: #011627;
+  
+  /* Cores neutras */
+  --color-neutral: #011627;
+  --color-neutral-content: #FDFFFC;
+  
+  /* Cores de estado */
+  --color-info: #66101F;
+  --color-info-content: #FDFFFC;
+  --color-success: #2ECC71;
+  --color-success-content: #FDFFFC;
+  --color-warning: #E6AF2E;
+  --color-warning-content: #011627;
+  --color-error: #F55D3E;
+  --color-error-content: #FDFFFC;
+  
+  /* Configurações de arredondamento */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  
+  /* Tamanhos base */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  
+  /* Tamanho da borda */
+  --border: 1px;
+  
+  /* Efeitos */
+  --depth: 1;
+  --noise: 0;
+}

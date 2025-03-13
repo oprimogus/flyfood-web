@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang='en' data-theme='firstTheme'>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
         <Providers>
           <Toaster richColors position='bottom-center' expand={true} />
