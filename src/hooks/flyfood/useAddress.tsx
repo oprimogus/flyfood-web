@@ -2,16 +2,16 @@ import type { Address } from '@/service/flyfood-api/types'
 import { create } from 'zustand'
 
 
-interface AddressStore {
+interface AddressState {
+  addresses: Address[]
   selectedAddress: Address | undefined
-  addresses: Address[] | undefined
   setSelectedAddress: (address: Address) => void
   setAddresses: (addresses: Address[]) => void
 }
 
-export const useAddress = create<AddressStore>((set) => ({
+export const useAddress = create<AddressState>((set) => ({
   selectedAddress: undefined,
-  addresses: undefined,
+  addresses: [],
   setSelectedAddress: (address) => set({ selectedAddress: address }),
-  setAddresses: (addresses: Address[]) => set({ addresses: addresses })
+  setAddresses: (addresList: Address[]) => set({ addresses: addresList })
 }))

@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { auth } from '@/app/auth'
 import { flyFoodApi } from '@/service/flyfood-api/service'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { redirect } from 'next/navigation'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -26,20 +27,12 @@ export default async function AuthenticatedLayout({
 }>) {
   const session = await auth()
   if (!session) {
-    return <h1>USUÁRIO NÃO LOGADO</h1>
+    redirect('/')
   }
 
   const customerResult = await flyFoodApi.getCustomerV1(session)
   if (!customerResult.ok) {
-    console.error(customerResult)
-    return (
-      <pre>
-        <code>
-          {JSON.stringify(customerResult, null, 2)}
-          {JSON.stringify(session, null, 2)}
-        </code>
-      </pre>
-    )
+    throw new Error('Failed to get customer information')
   }
 
   return (

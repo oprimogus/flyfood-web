@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export default function Home() {
   return (
-    <main className='w-full bg-base-100 text-base-content'>
+    <main className='bg-base-100 text-base-content overflow-x-hidden'>
       <NavHome />
 
       {/* Hero Section */}
@@ -12,8 +12,8 @@ export default function Home() {
           <Image
             src='flyfood/ilustration/deliveries.svg'
             alt='Delivery App Showcase'
-            width={600}
-            height={400}
+            width={300}
+            height={100}
             className='max-w-sm rounded-lg'
           />
           <div className='flex flex-col '>

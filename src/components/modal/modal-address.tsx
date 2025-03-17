@@ -1,21 +1,24 @@
 'use client'
 import { useAddress } from '@/hooks/flyfood/useAddress'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import ModalAddAddress from './modal-add-address'
 import ModalDeleteAddress from './modal-delete-address'
 
 export default function ModalAddress() {
-  const { 
-    selectedAddress, 
-    addresses, 
-    setSelectedAddress } = useAddress()
+  const selectedAddress = useAddress((state) => state.selectedAddress)
+  const addresses = useAddress((state) => state.addresses)
+  const setSelectedAddress = useAddress((state) => state.setSelectedAddress)
+
   const modalRef = useRef<HTMLDialogElement>(null)
 
   const openModal = () => modalRef.current?.showModal()
+  const closeModal = () => modalRef.current?.close()
 
   const displayedAddress = selectedAddress
     ? selectedAddress.addressLine1
     : (addresses?.[0]?.addressLine1 ?? 'Adicionar endereço')
+
+    useEffect(() => {}, [selectedAddress, addresses])
 
   return (
     <div>
@@ -59,7 +62,10 @@ export default function ModalAddress() {
                   <ModalDeleteAddress addr={address} />
                   <button
                     type='button'
-                    onClick={() => setSelectedAddress(address)}
+                    onClick={() => {
+                      setSelectedAddress(address)
+                      closeModal()
+                    }}
                     className='btn card bg-base-200 w-full h-full'
                   >
                     <h2 className='card-title'>{address.name}</h2>

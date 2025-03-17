@@ -20,19 +20,21 @@ export function useCustomer() {
     }
   })
 
-  const { selectedAddress, addresses, setAddresses, setSelectedAddress } = useAddress()
+  // const { selectedAddress, addresses, setAddresses, setSelectedAddress } = useAddress()
+  const selectedAddress = useAddress((state) => state.selectedAddress)
+  const setAddresses = useAddress((state) => state.setAddresses)
+  const setSelectedAddress = useAddress((state) => state.setSelectedAddress)
 
   useEffect(() => {
-    if (customer) {
-      if (!addresses) {
-        setAddresses(customer.addresses)
-      }
-
+    if (customer && customer.addresses.length > 0) {
+      setAddresses(customer.addresses) // Garante que o estado será atualizado
+  
       if (!selectedAddress) {
         setSelectedAddress(customer.addresses[0])
       }
     }
-  }, [customer, selectedAddress])
+  }, [customer, setAddresses, setSelectedAddress]) // Adicione as funções de atualização como dependências
+  
 
   return { customer, isLoading }
 }

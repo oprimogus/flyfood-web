@@ -11,20 +11,23 @@ export function useFindStores() {
   const { selectedAddress } = useAddress()
   const [queryParams, setQueryParams] = useState<GetStoresByFilterInput>({
     city: selectedAddress?.city ?? '',
-    maxItems: 25,
+    maxItems: 10,
     page: 1
   })
+
+  async function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
   const { data: storeList, isLoading, refetch } = useQuery({
     queryKey: ['stores', queryParams], // Evita reexecuções desnecessárias
     queryFn: async () => {
-      console.log('input: ', queryParams)
-      console.log('session: ', session)
+      const d = delay(2000)
       const result = await flyFoodApi.getStoreByFilterV1(session as Session, queryParams)
       if (!result.ok) {
         throw new Error(JSON.stringify(result.error))
       }
-      console.log('storelist: ', result.value)
+      await d
       return result.value
     },
     enabled: !!session && !!queryParams.city && queryParams.city !== ''

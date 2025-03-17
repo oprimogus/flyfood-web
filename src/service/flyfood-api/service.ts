@@ -1,5 +1,5 @@
 import { env } from '@/config/env'
-import { type Result, fetchApi } from '@/service/http'
+import { type Result, fetchApi } from '@/utils/http'
 import type { Session } from 'next-auth'
 import type {
   Address,
@@ -7,6 +7,7 @@ import type {
   FlyFoodError,
   FlyFoodValidationError,
   GetStoresByFilterInput,
+  Pagination,
   QueryOwnerStore,
   QueryOwnerStoreList,
   QueryStore,
@@ -122,7 +123,7 @@ export class FlyFoodApi {
   async getStoreByFilterV1(
     session: Session,
     params: GetStoresByFilterInput
-  ): Promise<Result<QueryStoreList[], FlyFoodValidationError>> {
+  ): Promise<Result<Pagination<QueryStoreList>, FlyFoodValidationError>> {
     const queryParams: Record<string, string> = {}
     if (params.name) queryParams.name = params.name
     if (params.city) queryParams.city = params.city
@@ -131,7 +132,7 @@ export class FlyFoodApi {
     if (params.page) queryParams.page = String(params.page)
     if (params.maxItems) queryParams.maxItems = String(params.maxItems)
 
-    return await fetchApi<QueryStoreList[], FlyFoodValidationError>(
+    return await fetchApi<Pagination<QueryStoreList>, FlyFoodValidationError>(
       this.baseURL,
       '/v1/store',
       {
@@ -165,7 +166,6 @@ export class FlyFoodApi {
     session: Session,
     id: string
   ): Promise<Result<QueryOwnerStore, FlyFoodError>> {
-    console.log('session: ', session)
     return await fetchApi<QueryOwnerStore, FlyFoodError>(
       this.baseURL,
       `/v1/owner/store/${id}`,

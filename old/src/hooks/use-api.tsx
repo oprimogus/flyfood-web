@@ -9,7 +9,7 @@ import type {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { Result } from '@/service/http'
+import { Result } from '@/utils/http'
 import { useToast } from './use-toast'
 
 function handleApiError(error: unknown): FlyFoodError {

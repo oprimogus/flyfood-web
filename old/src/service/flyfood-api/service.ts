@@ -1,5 +1,5 @@
 import { env } from '@/config/env'
-import { type Result, fetchApi } from '@/service/http'
+import { type Result, fetchApi } from '@/utils/http'
 import type { Session } from 'next-auth'
 import type {
   Address,

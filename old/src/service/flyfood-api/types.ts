@@ -1,4 +1,4 @@
-import type { ApiError } from '@/service/http'
+import type { ApiError } from '@/utils/utils'
 
 export type FlyFoodError = ApiError & {
   traceID: string
@@ -63,6 +63,7 @@ export type QueryStore = {
   score: number
   address: Address
   type: StoreType
+  deliveryTime: number
   profileImage: string
   headerImage: string
   businessHours: BusinessHours[]
@@ -78,6 +79,7 @@ export type QueryStoreList = {
   neighborhood: string
   city: string
   type: StoreType
+  deliveryTime: number
   profileImage: string
 }
 

@@ -1,5 +1,5 @@
 import { env } from '@/config/env'
-import { type Result, fetchApi } from '../http'
+import { type Result, fetchApi } from '../../utils/http'
 import type { AddressViaCep } from './types'
 
 export class ViaCEPApi {

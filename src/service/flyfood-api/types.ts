@@ -1,4 +1,4 @@
-import type { ApiError } from '@/service/http'
+import type { ApiError } from '@/utils/http'
 
 export type FlyFoodError = ApiError & {
   traceID: string
@@ -18,6 +18,16 @@ export type FlyFoodValidationError = Omit<FlyFoodError, 'details'> & {
   details: FlyFoodFieldError[]
 }
 
+export type Pagination<T> = {
+	data: T[],
+  currentPage: number,
+  pageSize: number,
+  totalPages: number,
+  totalItems: number,
+  hasNextPage: boolean,
+  hasPreviousPage: boolean
+}
+
 export type StoreType =
   | 'RESTAURANT'
   | 'PHARMACY'
@@ -26,7 +36,7 @@ export type StoreType =
   | 'PUB'
   | 'CONVENIENCE'
 
-export const storeTypeList: Record<StoreType, string> = {
+export const storeTypeTranslation: Record<StoreType, string> = {
   CONVENIENCE: 'Conveniência',
   MARKET: 'Mercado',
   PHARMACY: 'Farmácia',
@@ -36,6 +46,14 @@ export const storeTypeList: Record<StoreType, string> = {
 }
 
 export type PaymentMethod = 'CREDIT' | 'DEBIT' | 'PIX' | 'CASH' | 'BTC'
+
+export const paymentMethodTranslation = {
+  CREDIT: "Cartão de Crédito",
+  DEBIT: "Cartão de Débito",
+  PIX: "PIX",
+  CASH: "Dinheiro",
+  BTC: "Bitcoin"
+}
 
 export type ProductType = 'FOOD' | 'WATER'
 
@@ -78,6 +96,7 @@ export type QueryStore = {
   score: number
   address: Address
   type: StoreType
+  deliveryTime: number
   profileImage: string
   headerImage: string
   businessHours: BusinessHours[]
@@ -91,13 +110,14 @@ export type QueryStoreList = {
   isOpen: boolean
   score: number
   neighborhood: string
-  city: string
   type: StoreType
+  deliveryTime: number
   profileImage: string
 }
 
 export type GetStoresByFilterInput = {
   name?: string
+  range?: number
   city: string
   isOpen?: boolean
   score?: number
@@ -140,15 +160,15 @@ export type Product = {
   storeId: string
   SKU: string
   active: boolean
-  promo_active: boolean
+  promoActive: boolean
   type: ProductType
   tag: string
   name: string
   description: string
-  stock_quantity?: number
+  stockQuantity?: number
   score: number
   image?: string
   details?: Record<string, unknown>
   price: number
-  promotional_price: number
+  promotionalPrice: number
 }
