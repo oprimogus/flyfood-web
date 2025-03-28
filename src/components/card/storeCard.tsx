@@ -1,7 +1,8 @@
 'use client'
+import { useAddress } from '@/hooks/flyfood/useAddress'
 import { QueryStoreList } from '@/service/flyfood-api/types'
-import { formatDeliveryTimeToHour, formatRating } from '@/utils/utils'
-import { StoreIcon, Star, MapPinned, Hourglass } from 'lucide-react'
+import { calculateDistance, formatDeliveryTimeToHour, formatRating } from '@/utils/utils'
+import { StoreIcon, Star, MapPinned, Hourglass, Bike } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
@@ -10,12 +11,14 @@ type Props = {
 }
 
 export default function StoreCard({ store }: Props) {
+    const { selectedAddress } = useAddress()
+    const hasAllCoordinates = selectedAddress?.latitude && selectedAddress?.longitude && store.latitude && store.longitude
     return (
         <Link
             href={`/restaurants/${store.id}`}
             className="lock transition-all hover:scale-[1.02] active:scale-[0.98]"
         >
-            <div className="card card-side h-32 m-4 bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
+            <div className="card card-side h-32 mx-2 my-4 bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
                 <figure className="w-24">
                     {store.profileImage ? (
                         <img
@@ -41,9 +44,12 @@ export default function StoreCard({ store }: Props) {
                     <div className='flex flex-row space-x-2 justify-center justify-items-center'>
                         <MapPinned />
                         <p className="text-sm text-gray-600">{store.neighborhood}</p>
-                    </div>
-                    <div className="flex gap-4 mt-2">
-                        {/* Div vazia mantida para preservar a estrutura visual */}
+                        {hasAllCoordinates && (
+                            <>
+                                <Bike />
+                                <p className="text-sm text-gray-600">{calculateDistance(selectedAddress.latitude, selectedAddress.longitude, store.latitude, store.longitude)}</p>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

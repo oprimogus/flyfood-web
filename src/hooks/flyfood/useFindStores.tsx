@@ -11,6 +11,7 @@ export function useFindStores() {
   const { selectedAddress } = useAddress()
   const [queryParams, setQueryParams] = useState<GetStoresByFilterInput>({
     city: selectedAddress?.city ?? '',
+    score: 0,
     maxItems: 10,
     page: 1
   })

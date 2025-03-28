@@ -137,7 +137,6 @@ export class FlyFoodApi {
   }
 
   async getOwnerStoreByIDV1(session: Session, id: string): Promise<Result<QueryOwnerStore, FlyFoodError>> {
-    console.log("session: ", session)
     return await fetchApi<QueryOwnerStore, FlyFoodError>(
       this.baseURL,
       `/v1/owner/store/${id}`,

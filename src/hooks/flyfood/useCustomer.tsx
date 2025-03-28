@@ -34,7 +34,6 @@ export function useCustomer() {
       }
     }
   }, [customer, setAddresses, setSelectedAddress]) // Adicione as funções de atualização como dependências
-  
 
   return { customer, isLoading }
 }

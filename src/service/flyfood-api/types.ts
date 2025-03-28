@@ -110,6 +110,8 @@ export type QueryStoreList = {
   isOpen: boolean
   score: number
   neighborhood: string
+  latitude: string
+  longitude: string
   type: StoreType
   deliveryTime: number
   profileImage: string
@@ -117,7 +119,6 @@ export type QueryStoreList = {
 
 export type GetStoresByFilterInput = {
   name?: string
-  range?: number
   city: string
   isOpen?: boolean
   score?: number

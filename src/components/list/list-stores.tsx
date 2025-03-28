@@ -2,10 +2,11 @@
 import { useFindStores } from '@/hooks/flyfood/useFindStores'
 import { GetStoresByFilterInput, storeTypeTranslation } from '@/service/flyfood-api/types'
 import { MenuIcon, SearchIcon } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import Image from 'next/image'
 import StoreCard from '@/components/card/storeCard'
+import { formatRating } from '@/utils/utils'
 
 export default function ListStores() {
   const { storeList, isLoading, queryParams, setQueryParams } = useFindStores()
@@ -24,11 +25,11 @@ export default function ListStores() {
     defaultValues: { name: queryParams.name || '' }
   })
 
-  const { register: registerFilters, handleSubmit: handleSubmitFilters, watch, control } = useForm<GetStoresByFilterInput>({
-    defaultValues: { ...queryParams, range: 0, type: undefined, maxItems: 5 }
+  const { register: registerFilters, handleSubmit: handleSubmitFilters, control, watch } = useForm<GetStoresByFilterInput>({
+    defaultValues: { ...queryParams, type: undefined, score: 0, maxItems: 5 }
   })
 
-  const range = watch("range")
+  const score = watch("score")
 
   // Função para pesquisa por nome
   const handleSearchByName = async ({ name }: { name: string }) => {
@@ -42,7 +43,7 @@ export default function ListStores() {
   const handleSearchByFilters = async (input: GetStoresByFilterInput) => {
     const newParams = {
       ...queryParams,
-      range: Number(input.range),
+      score: input.score,
       type: input.type || undefined
     }
     setQueryParams(newParams)
@@ -116,10 +117,6 @@ export default function ListStores() {
     )
   }
 
-  useEffect(() => {
-    console.log('Parâmetros atuais:', queryParams)
-  }, [queryParams])
-
   return (
     <div className='flex flex-col items-center'>
       <div className='flex items-center'>
@@ -160,21 +157,22 @@ export default function ListStores() {
                 ))}
               </select>
 
-              <p>Distância: {range} km</p>
+              <p>Avaliação mínima: {formatRating(score || 0)}</p>
               <div className="w-full max-w-xs">
                 <Controller
-                  name="range"
+                  name="score"
                   control={control}
                   render={({ field }) => (
-                    <input {...field} type="range" min={0} max={20} step={1} className="range" />
+                    <input {...field} type="range" min={0} max={500} step={50} className="range" />
                   )}
                 />
                 <div className="flex justify-between px-2.5 mt-2 text-xs">
                   <span>0</span>
+                  <span>1</span>
+                  <span>2</span>
+                  <span>3</span>
+                  <span>4</span>
                   <span>5</span>
-                  <span>10</span>
-                  <span>15</span>
-                  <span>20</span>
                 </div>
               </div>
 

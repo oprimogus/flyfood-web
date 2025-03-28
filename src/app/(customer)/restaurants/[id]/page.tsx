@@ -3,9 +3,10 @@ import { flyFoodApi } from '@/service/flyfood-api/service'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import Image from 'next/image'
-import { StoreIcon, Clock, MapPin, Phone, Star, ShoppingBag, Info, CreditCard } from 'lucide-react'
+import { StoreIcon, Clock, MapPin, Phone, Star, ShoppingBag, Info, CreditCard, ChevronRight } from 'lucide-react'
 import { BusinessHours, paymentMethodTranslation, Product, QueryStore, storeTypeTranslation } from '@/service/flyfood-api/types'
 import { formatCurrency, formatRating } from '@/utils/utils'
+import ProductCard from '@/components/card/productCard'
 
 type RestaurantPageProps = {
     params: { id: string }
@@ -42,173 +43,140 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
 
     return (
         <div className="min-h-screen bg-base-200">
-            {/* Header da Loja */}
-            <div className="relative w-full overflow-hidden h-64">
-                {store.headerImage ? (
-                    <div className="relative w-full h-full">
+            {/* Banner e Logo */}
+            <div className="relative w-full h-52">
+                {/* Banner */}
+                <div className="w-full h-full relative">
+                    {store.headerImage ? (
                         <Image
-                            src={store.headerImage || "/placeholder.svg"}
+                            src={store.headerImage}
                             alt={store.name}
                             fill
-                            sizes="100vw"
                             className="object-cover"
                         />
-                        {/* Overlay gradient */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                        {/* Store name on image */}
-                        <div className="absolute bottom-4 left-4 text-white">
-                            <h1 className="text-4xl font-bold drop-shadow-md">{store.name}</h1>
-                        </div>
+                    ) : (
+                        <div className="w-full h-full bg-primary"></div>
+                    )}
+                </div>
+
+                {/* Logo */}
+                <div className="absolute left-1/2 transform -translate-x-1/2 bottom-0 z-40">
+                    <div className="w-20 h-20 rounded-full mb-12 border-4 border-white bg-white overflow-hidden">
+                        {store.profileImage ? (
+                            <Image
+                                src={store.profileImage}
+                                alt={store.name}
+                                width={80}
+                                height={80}
+                                className="object-cover w-full h-full"
+                            />
+                        ) : (
+                            <div className="w-full h-full bg-primary flex items-center justify-center">
+                                <StoreIcon className="w-12 h-12 text-white" />
+                            </div>
+                        )}
                     </div>
-                ) : (
-                    <div className="w-full h-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
-                        <h1 className="text-4xl text-center font-bold text-white">{store.name}</h1>
-                    </div>
-                )}
+                </div>
             </div>
 
             {/* Informações da Loja */}
             <div className="container mx-auto px-4 -mt-16 relative z-10">
-                <div className="card bg-base-100 shadow-xl">
-                    <div className="card-body p-6">
-                        <div className="flex flex-col md:flex-row gap-6">
-                            <div className="flex flex-col items-center md:items-start gap-4">
-                                {/* Profile image */}
-                                <div className="avatar">
-                                    <div className="w-24 h-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                        {store.profileImage ? (
-                                            <Image
-                                                src={store.profileImage || "/placeholder.svg"}
-                                                alt={store.name}
-                                                width={100}
-                                                height={100}
-                                                className='object-cover w-full h-full rounded-full'
-                                            />
-                                        ) : (
-                                            <div className="bg-primary w-full h-full flex items-center justify-center">
-                                                <StoreIcon className="w-18 h-18 text-white" />
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
+                <div className="rounded-xl bg-white shadow-md overflow-hidden">
 
-                                {/* Rating with stars visualization */}
-                                <div className="flex items-center gap-1 bg-base-200 px-3 py-1 rounded-full">
-                                    <Star className="w-4 h-4 text-warning" fill="currentColor" />
-                                    <span className="font-semibold">{formatRating(store.score)}</span>
-                                </div>
-                            </div>
+                    {/* Informações da Loja */}
+                    <div className="pt-4 pb-2 px-4">
+                        {/* Nome da Loja e Distância */}
+                        <div className="flex-1 mb-2">
+                            <div className="flex-1">
+                                <details className="collapse collapse-arrow">
+                                    <summary className="collapse-title text-xl font-bold">
+                                        {store.name}
+                                    </summary>
+                                    <div className="collapse-content text-sm">
+                                        <div className="join join-vertical w-full">
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                {/* Endereço */}
+                                                <div className="flex items-start gap-2">
+                                                    <MapPin className="w-5 h-5 text-primary mt-1" />
+                                                    <div>
+                                                        <h3 className="font-semibold">Endereço</h3>
+                                                        <p>{store.address.addressLine1}, {store.address.addressLine2}</p>
+                                                        <p>{store.address.neighborhood}, {store.address.city} - {store.address.state}</p>
+                                                    </div>
+                                                </div>
 
-                            {/* Store details */}
-                            <div className="flex-1 space-y-3">
-                                <h1 className="text-3xl text-center font-bold">{store.name}</h1>
+                                                {/* Contato */}
+                                                <div className="flex items-start gap-2">
+                                                    <Phone className="w-5 h-5 text-primary mt-1" />
+                                                    <div>
+                                                        <h3 className="font-semibold">Contato</h3>
+                                                        <p>{store.phone}</p>
+                                                    </div>
+                                                </div>
 
-                                <div className="flex flex-wrap items-center justify-center gap-2 w-full">
-                                    <div className="badge badge-primary">{storeTypeTranslation[store.type]}</div>
-                                    {store.isOpen ? (
-                                        <div className="badge badge-success gap-1">
-                                            <span className="inline-block w-2 h-2 rounded-full bg-success-content" />Aberto
-                                        </div>
-                                    ) : (
-                                        <div className="badge badge-error gap-1">
-                                            <span className="inline-block w-2 h-2 rounded-full bg-error-content"></span> Fechado
-                                        </div>
-                                    )}
-                                </div>
+                                                {/* Tempo de entrega */}
+                                                <div className="flex items-start gap-2">
+                                                    <Clock className="w-5 h-5 text-primary mt-1" />
+                                                    <div>
+                                                        <h3 className="font-semibold">Tempo de entrega</h3>
+                                                        <p>Aprox. {store.deliveryTime} minutos</p>
+                                                    </div>
+                                                </div>
 
-                                <p className="text-base-content/80">{store.description}</p>
+                                                {/* Horário de funcionamento */}
+                                                <div className="flex items-start gap-2">
+                                                    <Clock className="w-5 h-5 text-primary mt-1" />
+                                                    <div>
+                                                        <h3 className="font-semibold">Horário de funcionamento</h3>
+                                                        <ul className="mt-1">
+                                                            {formatBusinessHours(store.businessHours).map((hour, index) => (
+                                                                <li key={index}>{hour}</li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                </div>
 
-                                {/* Quick info badges */}
-                                <div className="flex flex-wrap gap-2">
-                                    <div className="badge badge-outline gap-1">
-                                        <Clock className="w-3 h-3" /> {store.deliveryTime} min
-                                    </div>
-                                    <div className="badge badge-outline gap-1">
-                                        <MapPin className="w-3 h-3" /> {store.address.city}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Informações extras */}
-                        <div className="divider my-4" />
-
-                        <div className="join join-vertical w-full">
-                            <div className="collapse collapse-arrow join-item border border-base-300">
-                                <input type="checkbox" />
-                                <div className="collapse-title text-lg font-medium">
-                                    Informações do estabelecimento
-                                </div>
-                                <div className="collapse-content">
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        {/* Endereço */}
-                                        <div className="flex items-start gap-2">
-                                            <MapPin className="w-5 h-5 text-primary mt-1" />
-                                            <div>
-                                                <h3 className="font-semibold">Endereço</h3>
-                                                <p>{store.address.addressLine1}, {store.address.addressLine2}</p>
-                                                <p>{store.address.neighborhood}, {store.address.city} - {store.address.state}</p>
-                                            </div>
-                                        </div>
-
-                                        {/* Contato */}
-                                        <div className="flex items-start gap-2">
-                                            <Phone className="w-5 h-5 text-primary mt-1" />
-                                            <div>
-                                                <h3 className="font-semibold">Contato</h3>
-                                                <p>{store.phone}</p>
-                                            </div>
-                                        </div>
-
-                                        {/* Tempo de entrega */}
-                                        <div className="flex items-start gap-2">
-                                            <Clock className="w-5 h-5 text-primary mt-1" />
-                                            <div>
-                                                <h3 className="font-semibold">Tempo de entrega</h3>
-                                                <p>Aprox. {store.deliveryTime} minutos</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="collapse collapse-arrow join-item border border-base-300">
-                                <input type="checkbox" />
-                                <div className="collapse-title text-lg font-medium">
-                                    Horários e pagamentos
-                                </div>
-                                <div className="collapse-content">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {/* Horário de funcionamento */}
-                                        <div className="flex items-start gap-2">
-                                            <Clock className="w-5 h-5 text-primary mt-1" />
-                                            <div>
-                                                <h3 className="font-semibold">Horário de funcionamento</h3>
-                                                <ul className="mt-1">
-                                                    {formatBusinessHours(store.businessHours).map((hour, index) => (
-                                                        <li key={index}>{hour}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        {/* Formas de pagamento */}
-                                        <div className="flex items-start gap-2">
-                                            <CreditCard className="w-5 h-5 text-primary mt-1" />
-                                            <div>
-                                                <h3 className="font-semibold">Formas de pagamento</h3>
-                                                <div className="flex flex-wrap gap-2 mt-1">
-                                                    {store.paymentMethods.map(method => (
-                                                        <div key={method} className="badge badge-outline">
-                                                            {paymentMethodTranslation[method]}
+                                                {/* Formas de pagamento */}
+                                                <div className="flex items-start gap-2">
+                                                    <CreditCard className="w-5 h-5 text-primary mt-1" />
+                                                    <div>
+                                                        <h3 className="font-semibold">Formas de pagamento</h3>
+                                                        <div className="flex flex-wrap gap-2 mt-1">
+                                                            {store.paymentMethods.map(method => (
+                                                                <div key={method} className="badge badge-outline">
+                                                                    {paymentMethodTranslation[method]}
+                                                                </div>
+                                                            ))}
                                                         </div>
-                                                    ))}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </details>
                             </div>
+
+                        </div>
+
+                        {/* Separador */}
+                        <div className="border-t border-gray-200 my-2"></div>
+
+                        {/* Avaliações */}
+                        <div className="flex items-center justify-between">
+                            <div className='flex items-center gap-1'>
+                                <Star className="w-4 h-4 text-warning" fill="currentColor" />
+                                <span className="ml-1 font-bold">{formatRating(store.score)}</span>
+                            </div>
+                            <span className="text-gray-500 ml-1">(790 avaliações)</span>
+                        </div>
+
+                        {/* Separador */}
+                        <div className="border-t border-gray-200 my-2"></div>
+
+                        {/* Entrega */}
+                        <div className="flex items-center justify-between">
+                            <div className="font-bold">Entrega</div>
+                            <span className="text-gray-700">{}Hoje, {store.deliveryTime} min</span>
                         </div>
                     </div>
                 </div>
@@ -242,39 +210,7 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
                             <div className="collapse-content text-sm">
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     {products.map(product => (
-                                        <div key={product.id} className="card card-compact bg-base-100 shadow-md hover:shadow-lg transition-all hover:-translate-y-1 border border-base-200">
-                                            <figure className="h-48 relative overflow-hidden">
-                                                {product.image ? (
-                                                    <img src={product.image || "/placeholder.svg"} alt={product.name} className="object-cover w-full h-full" />
-                                                ) : (
-                                                    <div className="w-full h-full flex items-center justify-center bg-base-200">
-                                                        <ShoppingBag className="w-12 h-12 text-base-content/30" />
-                                                    </div>
-                                                )}
-                                                {product.promoActive && (
-                                                    <div className="absolute top-2 right-2 badge badge-secondary">Promoção</div>
-                                                )}
-                                            </figure>
-                                            <div className="card-body">
-                                                <h4 className="card-title text-lg">{product.name}</h4>
-                                                <p className="text-sm text-base-content/70 line-clamp-2">{product.description}</p>
-                                                <div className="flex justify-between items-center mt-2">
-                                                    {product.promoActive ? (
-                                                        <div className="flex flex-col">
-                                                            <span className="text-sm line-through text-base-content/50">{formatCurrency(product.price)}</span>
-                                                            <span className="text-lg font-bold text-primary">{formatCurrency(product.promotionalPrice)}</span>
-                                                        </div>
-                                                    ) : (
-                                                        <span className="text-lg font-bold">{formatCurrency(product.price)}</span>
-                                                    )}
-
-                                                    <button className="btn btn-primary btn-sm gap-2">
-                                                        <ShoppingBag className="w-4 h-4" />
-                                                        Adicionar
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <ProductCard key={product.id} product={product} />
                                     ))}
                                 </div>
                             </div>
@@ -298,6 +234,6 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
                     <ShoppingBag className="w-6 h-6" />
                 </button>
             </div>
-        </div>
+        </div >
     )
 }
