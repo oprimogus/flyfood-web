@@ -24,7 +24,6 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
         redirect('/404')
     }
     const store = result.value
-    console.log(store)
 
     // Função para formatar horários de funcionamento
     const formatBusinessHours = (businessHours: BusinessHours[]) => {
