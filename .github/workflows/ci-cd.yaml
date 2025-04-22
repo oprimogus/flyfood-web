@@ -52,7 +52,7 @@ jobs:
          
       - name: List files in the build directory
         run: |
-          ls -la ./build
+          ls -la
 
       - name: Build and push Next.js app Docker image
         uses: docker/build-push-action@v2
