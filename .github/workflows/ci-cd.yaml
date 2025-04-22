@@ -49,10 +49,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.ACTIONS_TOKEN }}
-         
-      - name: List files in the build directory
-        run: |
-          ls -la
 
       - name: Build and push Next.js app Docker image
         uses: docker/build-push-action@v2
