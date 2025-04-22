@@ -54,7 +54,7 @@ export default function ModalAddress() {
 
           {addresses?.length ? (
             <ul className='py-4'>
-              {addresses.map((address, i) => (
+              {addresses.map((address) => (
                 <li
                   key={address.name}
                   className='relative border-b py-2 text-center h-32'

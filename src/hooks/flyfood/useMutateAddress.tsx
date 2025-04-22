@@ -58,7 +58,7 @@ export function useMutateAddress() {
     onSuccess: (_, address) => {
       // Ensure we refresh the customer data
       queryClient.invalidateQueries({ queryKey: ['customer'] })
-      .then(data => {
+      .then(() => {
         // Update the Zustand store with fresh data from the backend
         const customer = queryClient.getQueryData<Customer>(['customer'])
         if (customer?.addresses) {

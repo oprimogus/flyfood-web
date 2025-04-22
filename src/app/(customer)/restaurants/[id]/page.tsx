@@ -3,22 +3,18 @@ import { flyFoodApi } from '@/service/flyfood-api/service'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import Image from 'next/image'
-import { StoreIcon, Clock, MapPin, Phone, Star, ShoppingBag, Info, CreditCard, ChevronRight } from 'lucide-react'
-import { BusinessHours, paymentMethodTranslation, Product, QueryStore, storeTypeTranslation } from '@/service/flyfood-api/types'
-import { formatCurrency, formatRating } from '@/utils/utils'
+import { StoreIcon, Clock, MapPin, Phone, Star, ShoppingBag, Info, CreditCard } from 'lucide-react'
+import { BusinessHours, paymentMethodTranslation, Product } from '@/service/flyfood-api/types'
+import { formatRating } from '@/utils/utils'
 import ProductCard from '@/components/card/productCard'
 
-type RestaurantPageProps = {
-    params: { id: string }
-}
 
-export default async function RestaurantPage({ params }: RestaurantPageProps) {
-    await params
-    const { id } = params
+export default async function RestaurantPage({ params }: { params: Promise<{ id: string }>}) {
+    const { id } = await params
     const session = await auth()
     if (!session) {
         redirect('/')
-    }
+      }
     const result = await flyFoodApi.getStoreByIDV1(session, id)
     if (!result.ok) {
         redirect('/404')
@@ -175,7 +171,7 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
                         {/* Entrega */}
                         <div className="flex items-center justify-between">
                             <div className="font-bold">Entrega</div>
-                            <span className="text-gray-700">{}Hoje, {store.deliveryTime} min</span>
+                            <span className="text-gray-700">{ }Hoje, {store.deliveryTime} min</span>
                         </div>
                     </div>
                 </div>

@@ -92,7 +92,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return refreshAccessToken(token)
     },
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       session.user.accessToken = token.accessToken ?? ''
       session.user.idToken = token.idToken ?? ''
       const userInfo = jose.decodeJwt(session.user.idToken) as ZitadelUserInfo

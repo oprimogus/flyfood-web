@@ -52,7 +52,7 @@ export default function Home() {
                 title: 'Pagamentos Diretos',
                 desc: 'Receba diretamente via Pix, cartão ou dinheiro, sem intermediários que reduzam seu faturamento.'
               }
-            ].map((benefit, index) => (
+            ].map((benefit) => (
               <div
                 key={benefit.title}
                 className='card bg-primary text-base-100 shadow-xl'
@@ -93,7 +93,7 @@ export default function Home() {
                 title: '4. Lucro Direto',
                 desc: 'Receba os pagamentos sem intermediários e aumente sua margem de lucro.'
               }
-            ].map((step, index) => (
+            ].map((step) => (
               <div
                 key={step.title}
                 className='card bg-primary text-white shadow-xl'

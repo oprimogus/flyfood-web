@@ -33,7 +33,7 @@ export function useCustomer() {
         setSelectedAddress(customer.addresses[0])
       }
     }
-  }, [customer, setAddresses, setSelectedAddress]) // Adicione as funções de atualização como dependências
+  }, [customer, selectedAddress, setAddresses, setSelectedAddress]) // Adicione as funções de atualização como dependências
 
   return { customer, isLoading }
 }

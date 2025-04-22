@@ -1,5 +1,4 @@
 import { env } from '@/config/env'
-import { Session } from 'next-auth'
 import { fetchApi } from '../../utils/http'
 import type { ZitadelUserInfo } from './types'
 
