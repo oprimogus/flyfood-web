@@ -73,7 +73,17 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [ZITADEL],
+  providers: [
+    ZITADEL({
+      clientId: env.zitadel.clientID,
+      issuer: env.zitadel.issuer,
+      authorization: {
+        params: {
+          scope: `openid profile email urn:zitadel:iam:org:project:id:${env.zitadel.projectID}:aud`,
+        }
+      },
+    })
+  ],
   callbacks: {
     signIn({ account }) {
       if (account?.provider === 'zitadel') {
