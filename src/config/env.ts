@@ -6,7 +6,7 @@ export enum Environment {
 }
 
 export const env = {
-  environment: Environment.Staging,
+  environment: process.env.NODE_ENV ?? '',
   zitadel: {
     issuer: process.env.AUTH_ZITADEL_ISSUER ?? '',
     clientID: process.env.AUTH_ZITADEL_ID ?? '',
@@ -15,7 +15,7 @@ export const env = {
   },
   clients: {
     flyfoodApi: {
-      baseURL: process.env.CLIENT_FLYFOOD_API ?? 'http://localhost:3000/api'
+      baseURL: process.env.CLIENT_FLYFOOD_API ?? 'http://localhost:3000/flyfood-api'
     },
     viacep: {
       baseURL: process.env.CLIENT_VIACEP_API ?? 'http://viacep.com.br'
