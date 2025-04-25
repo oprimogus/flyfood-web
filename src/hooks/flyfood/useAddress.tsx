@@ -1,7 +1,6 @@
 import type { Address } from '@/service/flyfood-api/types'
 import { create } from 'zustand'
 
-
 interface AddressState {
   addresses: Address[]
   selectedAddress: Address | undefined

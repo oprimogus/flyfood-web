@@ -19,12 +19,12 @@ export type FlyFoodValidationError = Omit<FlyFoodError, 'details'> & {
 }
 
 export type Pagination<T> = {
-	data: T[],
-  currentPage: number,
-  pageSize: number,
-  totalPages: number,
-  totalItems: number,
-  hasNextPage: boolean,
+  data: T[]
+  currentPage: number
+  pageSize: number
+  totalPages: number
+  totalItems: number
+  hasNextPage: boolean
   hasPreviousPage: boolean
 }
 
@@ -48,11 +48,11 @@ export const storeTypeTranslation: Record<StoreType, string> = {
 export type PaymentMethod = 'CREDIT' | 'DEBIT' | 'PIX' | 'CASH' | 'BTC'
 
 export const paymentMethodTranslation = {
-  CREDIT: "Cartão de Crédito",
-  DEBIT: "Cartão de Débito",
-  PIX: "PIX",
-  CASH: "Dinheiro",
-  BTC: "Bitcoin"
+  CREDIT: 'Cartão de Crédito',
+  DEBIT: 'Cartão de Débito',
+  PIX: 'PIX',
+  CASH: 'Dinheiro',
+  BTC: 'Bitcoin'
 }
 
 export type ProductType = 'FOOD' | 'WATER'

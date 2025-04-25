@@ -29,10 +29,7 @@ export default function ModalDeleteAddress({ addr }: Props) {
         <XIcon />
       </button>
       {/* Modal */}
-      <dialog
-        ref={modalRef}
-        className='modal'
-      >
+      <dialog ref={modalRef} className='modal'>
         <div className='modal-box justify-items-center max-w-screen-[70vh] overflow-y-auto space-y-2'>
           <form method='dialog'>
             <button

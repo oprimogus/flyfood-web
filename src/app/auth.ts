@@ -39,9 +39,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       issuer: env.zitadel.issuer,
       authorization: {
         params: {
-          scope: `openid profile email urn:zitadel:iam:org:project:id:${env.zitadel.projectID}:aud`,
+          scope: `openid profile email urn:zitadel:iam:org:project:id:${env.zitadel.projectID}:aud`
         }
-      },
+      }
     })
   ],
   callbacks: {

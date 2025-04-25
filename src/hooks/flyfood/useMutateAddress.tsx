@@ -10,7 +10,7 @@ export function useMutateAddress() {
   const queryClient = useQueryClient()
   const { data: session } = useSession()
   const { customer } = useCustomer()
-  
+
   // Get the setters directly from the store
   const setSelectedAddress = useAddress((state) => state.setSelectedAddress)
   const setAddresses = useAddress((state) => state.setAddresses)
@@ -28,17 +28,22 @@ export function useMutateAddress() {
     },
     onMutate: async (newAddress) => {
       await queryClient.cancelQueries({ queryKey: ['customer'] })
-      const previousCustomer = queryClient.getQueryData<Customer | undefined>(['customer'])
+      const previousCustomer = queryClient.getQueryData<Customer | undefined>([
+        'customer'
+      ])
 
       if (previousCustomer) {
-        const updatedAddresses = [...(previousCustomer.addresses || []), newAddress]
-        
+        const updatedAddresses = [
+          ...(previousCustomer.addresses || []),
+          newAddress
+        ]
+
         // Update both the query cache and the Zustand store
         queryClient.setQueryData(['customer'], {
           ...previousCustomer,
           addresses: updatedAddresses
         })
-        
+
         // Update the Zustand store
         setAddresses(updatedAddresses)
       }
@@ -57,18 +62,17 @@ export function useMutateAddress() {
     },
     onSuccess: (_, address) => {
       // Ensure we refresh the customer data
-      queryClient.invalidateQueries({ queryKey: ['customer'] })
-      .then(() => {
+      queryClient.invalidateQueries({ queryKey: ['customer'] }).then(() => {
         // Update the Zustand store with fresh data from the backend
         const customer = queryClient.getQueryData<Customer>(['customer'])
         if (customer?.addresses) {
           setAddresses(customer.addresses)
         }
-        
+
         // Set the selected address
         setSelectedAddress(address)
       })
-      
+
       toast.success('Endereço adicionado!', {
         description: 'Seu endereço foi salvo com sucesso.'
       })
@@ -88,22 +92,25 @@ export function useMutateAddress() {
     },
     onMutate: async (addressToRemove) => {
       await queryClient.cancelQueries({ queryKey: ['customer'] })
-      const previousCustomer = queryClient.getQueryData<Customer | undefined>(['customer'])
+      const previousCustomer = queryClient.getQueryData<Customer | undefined>([
+        'customer'
+      ])
 
       if (previousCustomer) {
-        const updatedAddresses = previousCustomer.addresses?.filter(
-          (address) => address !== addressToRemove
-        ) || []
+        const updatedAddresses =
+          previousCustomer.addresses?.filter(
+            (address) => address !== addressToRemove
+          ) || []
 
         // Update both the query cache and the Zustand store
         queryClient.setQueryData(['customer'], {
           ...previousCustomer,
           addresses: updatedAddresses
         })
-        
+
         // Update the Zustand store
         setAddresses(updatedAddresses)
-        
+
         // If the removed address was selected, clear the selection
         if (addressToRemove === useAddress.getState().selectedAddress) {
           setSelectedAddress(updatedAddresses[0] || null)
@@ -125,15 +132,14 @@ export function useMutateAddress() {
     },
     onSuccess: () => {
       // Ensure we refresh the customer data
-      queryClient.invalidateQueries({ queryKey: ['customer'] })
-      .then(() => {
+      queryClient.invalidateQueries({ queryKey: ['customer'] }).then(() => {
         // Update the Zustand store with fresh data from the backend
         const customer = queryClient.getQueryData<Customer>(['customer'])
         if (customer?.addresses) {
           setAddresses(customer.addresses)
         }
       })
-      
+
       toast.success('Endereço removido!', {
         description: 'Seu endereço foi removido com sucesso.'
       })

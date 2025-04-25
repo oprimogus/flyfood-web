@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { flyFoodApi } from '@/service/flyfood-api/service'
 import type { GetStoresByFilterInput } from '@/service/flyfood-api/types'
-import { Session } from 'next-auth'
+import type { Session } from 'next-auth'
 import { useEffect, useState } from 'react'
 import { useAddress } from '@/hooks/flyfood/useAddress'
 
@@ -17,14 +17,21 @@ export function useFindStores() {
   })
 
   async function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms))
   }
 
-  const { data: storeList, isLoading, refetch } = useQuery({
+  const {
+    data: storeList,
+    isLoading,
+    refetch
+  } = useQuery({
     queryKey: ['stores', queryParams], // Evita reexecuções desnecessárias
     queryFn: async () => {
       const d = delay(2000)
-      const result = await flyFoodApi.getStoreByFilterV1(session as Session, queryParams)
+      const result = await flyFoodApi.getStoreByFilterV1(
+        session as Session,
+        queryParams
+      )
       if (!result.ok) {
         throw new Error(JSON.stringify(result.error))
       }

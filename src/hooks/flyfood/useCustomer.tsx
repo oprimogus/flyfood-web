@@ -28,7 +28,7 @@ export function useCustomer() {
   useEffect(() => {
     if (customer && customer.addresses.length > 0) {
       setAddresses(customer.addresses) // Garante que o estado será atualizado
-  
+
       if (!selectedAddress) {
         setSelectedAddress(customer.addresses[0])
       }

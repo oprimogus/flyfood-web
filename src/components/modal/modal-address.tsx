@@ -18,24 +18,17 @@ export default function ModalAddress() {
     ? selectedAddress.addressLine1
     : (addresses?.[0]?.addressLine1 ?? 'Adicionar endereço')
 
-    useEffect(() => {}, [selectedAddress, addresses])
+  useEffect(() => {}, [])
 
   return (
     <div>
       {/* Botão para abrir modal */}
-      <button
-        className='btn'
-        type='button'
-        onClick={openModal}
-      >
+      <button className='btn' type='button' onClick={openModal}>
         {displayedAddress ?? 'Carregando...'}
       </button>
 
       {/* Modal */}
-      <dialog
-        ref={modalRef}
-        className='modal'
-      >
+      <dialog ref={modalRef} className='modal'>
         <div className='modal-box justify-items-center max-w-screen-[70vh] overflow-y-auto'>
           <form method='dialog'>
             <button

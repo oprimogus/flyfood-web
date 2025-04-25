@@ -127,7 +127,8 @@ export class FlyFoodApi {
     const queryParams: Record<string, string> = {}
     if (params.name) queryParams.name = params.name
     if (params.city) queryParams.city = params.city
-    if (params.score && params.score > 0) queryParams.score = String(params.score)
+    if (params.score && params.score > 0)
+      queryParams.score = String(params.score)
     if (params.isOpen) queryParams.isOpen = String(params.isOpen)
     if (params.type) queryParams.type = String(params.type)
     if (params.page) queryParams.page = String(params.page)
