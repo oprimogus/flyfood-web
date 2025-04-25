@@ -32,46 +32,6 @@ declare module 'next-auth/jwt' {
   }
 }
 
-async function refreshAccessToken(token: JWT): Promise<JWT> {
-  try {
-    const baseURL = new URL(env.zitadel.issuer)
-    let conf: openid.Configuration
-    if (env.environment === Environment.Production) {
-      conf = await openid.discovery(baseURL, env.zitadel.clientID, {})
-    } else {
-      conf = await openid.discovery(
-        baseURL,
-        env.zitadel.clientID,
-        {},
-        undefined,
-        {
-          execute: [openid.allowInsecureRequests]
-        }
-      )
-    }
-
-    if (!token.refreshToken) {
-      return signIn('zitadel')
-    }
-
-    const { access_token, refresh_token, expires_in, id_token } =
-      await openid.refreshTokenGrant(conf, token.refreshToken)
-    return {
-      ...token,
-      accessToken: access_token,
-      idToken: id_token,
-      expiresAt: (expires_in ?? 0) * 1000,
-      refreshToken: refresh_token
-    }
-  } catch (error) {
-    console.error('Error during refreshAccessToken', error)
-    return {
-      ...token,
-      error: 'RefreshAccessTokenError'
-    }
-  }
-}
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     ZITADEL({
@@ -95,12 +55,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account) {
         token.accessToken = account.access_token
         token.idToken = account.id_token
-        token.expiresAt = (account.expires_at ?? 0) * 1000
       }
-      if (Date.now() < token.expiresAt) {
-        return token
-      }
-      return refreshAccessToken(token)
+      return token
     },
     async session({ session, token }) {
       session.user.accessToken = token.accessToken ?? ''

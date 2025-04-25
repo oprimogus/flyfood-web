@@ -17,7 +17,7 @@ export class ViaCEPApi {
   }
 
   async getCEP(cep: string): Promise<Result<AddressViaCep, unknown>> {
-    return await fetchApi<AddressViaCep, unknown>(
+    return await fetchApi<AddressViaCep>(
       this.baseURL,
       `/ws/${cep}/json/`,
       {
