@@ -1,4 +1,4 @@
-import { Environment, env } from '@/config/env'
+import { env } from '@/config/env'
 import {
   type ZitadelRole,
   type ZitadelUserInfo,
@@ -6,9 +6,7 @@ import {
 } from '@/service/zitadel/types'
 import * as jose from 'jose'
 import NextAuth from 'next-auth'
-import type { JWT } from 'next-auth/jwt'
 import ZITADEL from 'next-auth/providers/zitadel'
-import * as openid from 'openid-client'
 
 declare module 'next-auth' {
   interface Session {
@@ -20,15 +18,6 @@ declare module 'next-auth' {
       accessToken: string
       idToken: string
     }
-  }
-}
-
-declare module 'next-auth/jwt' {
-  interface JWT {
-    accessToken?: string
-    idToken?: string
-    refreshToken?: string
-    expiresAt: number
   }
 }
 
@@ -51,16 +40,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return false
     },
-    async jwt({ token, account }) {
+    async jwt({ token, account, session }) {
       if (account) {
-        token.accessToken = account.access_token
-        token.idToken = account.id_token
+        session.accessToken = account.access_token
+        session.idToken = account.id_token
       }
       return token
     },
-    async session({ session, token }) {
-      session.user.accessToken = token.accessToken ?? ''
-      session.user.idToken = token.idToken ?? ''
+    async session({ session }) {
       const userInfo = jose.decodeJwt(session.user.idToken) as ZitadelUserInfo
       const rolesSet = new Set<ZitadelRole>()
       for (const [key, value] of Object.entries(userInfo)) {

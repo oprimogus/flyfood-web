@@ -160,7 +160,7 @@ export default async function RestaurantPage({
                             </h3>
                             <ul className='mt-1'>
                               {formatBusinessHours(store.businessHours).map(
-                                (hour, index) => (
+                                (hour) => (
                                   <li key={hour}>{hour}</li>
                                 )
                               )}
