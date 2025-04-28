@@ -42,12 +42,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async jwt({ token, account, session }) {
       if (account) {
-        session.accessToken = account.access_token
-        session.idToken = account.id_token
+        token.accessToken = account.access_token
+        token.idToken = account.id_token
       }
       return token
     },
-    async session({ session }) {
+    async session({ session, token }) {
+      session.user.accessToken = token.accessToken as string
+      session.user.idToken = token.idToken as string
       const userInfo = jose.decodeJwt(session.user.idToken) as ZitadelUserInfo
       const rolesSet = new Set<ZitadelRole>()
       for (const [key, value] of Object.entries(userInfo)) {
