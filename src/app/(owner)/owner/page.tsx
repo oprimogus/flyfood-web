@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import NavHome from '@/components/nav/nav-home'
 import Footer from '@/components/footer/footer'
 import * as Progress from '@radix-ui/react-progress'
@@ -129,10 +128,6 @@ const planos = [
 ]
 
 export default function HomeOwner() {
-  // Contador de economia fictício
-  const economiaMensal = 2500; // Economia média mensal em R$
-  const lojasFlyFood = 1500; // Número de lojas
-  const economiaTotal = economiaMensal * lojasFlyFood; // Total economizado por mês em toda a rede
   return (
     <main className='flex flex-col min-h-screen bg-base-100 text-base-content overflow-x-hidden'>
       <NavHome />
@@ -331,7 +326,7 @@ export default function HomeOwner() {
             {/* Linha conectora (visível apenas em desktop) */}
             <div className="hidden md:block absolute top-1/3 left-0 right-0 h-0.5 bg-base-300 z-0"></div>
 
-            {comoFunciona.map((item, index) => (
+            {comoFunciona.map((item) => (
               <div
                 key={item.title}
                 className="card bg-base-100 shadow-xl border border-base-300 z-10"
@@ -446,10 +441,10 @@ export default function HomeOwner() {
                     />
                   ))}
                 </div>
-                <p className="mt-4 mb-4 italic">"{depoimento.texto}"</p>
+                <p className="mt-4 mb-4 italic">&quot;{depoimento.texto}&quot;</p>
                 <div className="flex items-center gap-2">
                   <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">
-                    {depoimento.nome.charAt(0)}
+                  &quot;{depoimento.nome.charAt(0)}&quot;
                   </div>
                   <div>
                     <p className="font-medium">{depoimento.nome}</p>
