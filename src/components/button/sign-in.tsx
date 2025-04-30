@@ -6,7 +6,10 @@ export default function ButtonSignIn() {
     <form
       action={async () => {
         'use server'
-        await signIn('zitadel', { redirectTo: '/restaurants' })
+        await signIn('zitadel', { 
+          redirectTo: '/restaurants',
+          
+        })
       }}
     >
       <button type='submit' className='btn btn-primary'>

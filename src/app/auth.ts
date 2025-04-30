@@ -28,18 +28,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       issuer: env.zitadel.issuer,
       authorization: {
         params: {
-          scope: `openid profile email urn:zitadel:iam:org:project:id:${env.zitadel.projectID}:aud`
+          scope: `openid profile email urn:zitadel:iam:org:project:id:${env.zitadel.projectID}:aud`,
+          prompt: 'login',
         }
       }
     })
   ],
   callbacks: {
-    signIn({ account }) {
-      if (account?.provider === 'zitadel') {
-        return true
-      }
-      return false
-    },
     async jwt({ token, account }) {
       if (account) {
         token.accessToken = account.access_token
@@ -67,8 +62,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.roles = Array.from(rolesSet)
       return session
     },
-    authorized: async ({ auth }) => {
-      return !!auth
-    }
   }
 })

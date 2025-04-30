@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 export default function NavHome() {
   return (
-    <nav className='w-screen navbar bg-base-100 justify-between shadow-md sticky top-0 z-50'>
+    <nav className='w-screen navbar bg-base-100 justify-between shadow-md fixed top-0 z-50'>
       <Link href='/' className='flex items-center space-x-3'>
         <div className='h-10 w-10 relative'>
           <Image
@@ -50,15 +50,15 @@ export default function NavHome() {
 
       {/* Desktop Navigation */}
       <div className='hidden md:flex mx-4 items-center space-x-8'>
-        <Link href='/cadastro-loja' className='link-hover'>
+        <Link href='/owner' className='link-hover'>
           Anuncie seu negócio
         </Link>
-        <Link href='/' className='link-hover'>
+        {/* <Link href='/' className='link-hover'>
           Restaurantes
         </Link>
         <Link href='/' className='link-hover'>
           Lojas
-        </Link>
+        </Link> */}
       </div>
       <div className='hidden md:flex mx-4 items-center space-x-8'>
         <ButtonSignIn />

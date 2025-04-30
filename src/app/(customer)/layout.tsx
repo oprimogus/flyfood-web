@@ -21,7 +21,7 @@ export default async function AuthenticatedLayout({
 
   const customerResult = await flyFoodApi.getCustomerV1(session)
   if (!customerResult.ok) {
-    throw new Error('Failed to get customer information')
+    throw new Error(JSON.stringify(customerResult.error))
   }
 
   return (
