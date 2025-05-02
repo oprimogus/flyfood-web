@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "PORT=3002 next dev --turbopack",
     "build": "next build",
+    "build:dev": "env $(cat .env.dev | xargs) next build",
+    "build:prod": "env $(cat .env.production | xargs) next build",
     "start": "next start",
     "lint": "biome check --fix --unsafe ./src && biome format --write ./src"
   },
