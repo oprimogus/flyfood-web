@@ -19,7 +19,7 @@ export const env = {
         process.env.CLIENT_FLYFOOD_API ?? 'https://flyfood.com.br/flyfood-api'
     },
     viacep: {
-      baseURL: process.env.CLIENT_VIACEP_API ?? 'http://viacep.com.br'
+      baseURL: process.env.CLIENT_VIACEP_API ?? 'https://viacep.com.br'
     }
   }
 }
