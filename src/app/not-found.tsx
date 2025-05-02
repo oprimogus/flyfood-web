@@ -1,15 +1,18 @@
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function NotFound() {
   return (
     <div className='min-h-screen bg-base-200 flex items-center justify-center p-4'>
       <div className='card w-full max-w-md bg-base-100 shadow-xl'>
         <figure className='px-10 pt-10'>
-          <img
+          <Image
             src='/flyfood/ilustration/not-found.svg'
             alt='404 Illustration'
             className='w-64 h-64'
+            width={64}
+            height={64}
           />
         </figure>
         <div className='card-body items-center text-center'>

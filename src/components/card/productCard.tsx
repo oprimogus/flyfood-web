@@ -1,6 +1,7 @@
 import type { Product } from '@/service/flyfood-api/types'
 import { formatCurrency } from '@/utils/utils'
 import { ShoppingBag } from 'lucide-react'
+import Image from 'next/image'
 
 type Props = {
   product: Product
@@ -14,10 +15,12 @@ export default function ProductCard({ product }: Props) {
     >
       <figure className='w-32 relative overflow-hidden'>
         {product.image ? (
-          <img
+          <Image
             src={product.image || '/placeholder.svg'}
             alt={product.name}
             className='object-cover w-full h-full hover:scale-110 transition-transform duration-500'
+            width={64}
+            height={64}
           />
         ) : (
           <div className='w-full h-full flex items-center justify-center bg-gradient-to-br from-primary to-primary-focus'>

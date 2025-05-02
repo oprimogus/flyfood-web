@@ -7,6 +7,7 @@ import {
   formatRating
 } from '@/utils/utils'
 import { StoreIcon, Star, MapPinned, Hourglass, Bike } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -23,15 +24,17 @@ export default function StoreCard({ store }: Props) {
     store.longitude
   return (
     <Link
-      href={`/restaurants/${store.id}`}
+      href={`/stores/${store.id}`}
       className='lock transition-all hover:scale-[1.02] active:scale-[0.98]'
     >
       <div className='card card-side h-32 mx-2 my-4 bg-base-100 shadow-xl hover:shadow-2xl transition-shadow'>
         <figure className='w-24'>
           {store.profileImage ? (
-            <img
+            <Image
               src={store.profileImage}
               alt={store.name}
+              width={24}
+              height={24}
               className='w-full h-full object-cover'
             />
           ) : (

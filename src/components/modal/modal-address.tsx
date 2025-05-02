@@ -42,9 +42,6 @@ export default function ModalAddress() {
             Selecionar Endereço
           </h3>
 
-          {/* Verifica erro ou lista os endereços */}
-          {/* {isLoading && <p className='py-4'>Carregando endereços...</p>} */}
-
           {addresses?.length ? (
             <ul className='py-4'>
               {addresses.map((address) => (

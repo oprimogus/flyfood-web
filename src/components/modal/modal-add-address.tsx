@@ -14,7 +14,7 @@ export default function ModalAddAddress() {
       {/* Open the modal using document.getElementById('ID').showModal() method */}
       <button
         type='button'
-        className='btn btn-primary'
+        className='btn btn-primary btn-md w-full'
         onClick={() => openModal()}
       >
         Adicionar novo endereço

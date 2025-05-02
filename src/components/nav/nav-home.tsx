@@ -34,7 +34,7 @@ export default function NavHome() {
               {' '}
               {/* Alinhado ao centro */}
               <Link
-                href='/restaurants'
+                href='/stores'
                 className='text-lg px-4 text-center w-full'
               >
                 Restaurantes

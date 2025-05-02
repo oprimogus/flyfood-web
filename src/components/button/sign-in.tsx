@@ -7,7 +7,7 @@ export default function ButtonSignIn() {
       action={async () => {
         'use server'
         await signIn('zitadel', { 
-          redirectTo: '/restaurants',
+          redirectTo: '/stores',
           
         })
       }}
