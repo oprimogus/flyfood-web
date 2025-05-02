@@ -22,11 +22,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Create .env file
+      - name: Create .env file based on branch
         run: |
-          echo "APP_REPO=${{ github.event.repository.name }}" >> .env
-          echo "APP_NAME=${{ github.event.repository.name }}" >> .env
-          cat .env
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "CLIENT_FLYFOOD_API=https://flyfood.com.br/flyfood-api" >> .env
+          else
+            echo "CLIENT_FLYFOOD_API=https://dev.flyfood.com.br/flyfood-api" >> .env
+          fi
 
       - name: Build Next.js app
         run: npm run build
