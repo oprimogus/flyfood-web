@@ -22,16 +22,19 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        
+      - name: Set up environment file based on branch
+        run: |
+            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "Using production environment"
+            else
+            echo "Using development environment"
+            cp .env.dev .env.production
+            fi
 
       - name: Build NextJS app based on branch
         run: |
-          if [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
-            echo "Building for production environment"
-            npm run build:prod
-          else
-            echo "Building for development environment"
-            npm run build:dev
-          fi
+            npm run build
 
   deploy:
     name: Deploy
