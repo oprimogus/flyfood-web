@@ -1,4 +1,3 @@
-# Etapa de build
 FROM node:22-alpine AS builder
 
 WORKDIR /app
@@ -7,9 +6,13 @@ COPY package.json package-lock.json* ./
 RUN npm ci
 
 COPY . .
+
+# Copia .env.dev como .env.production se ARG MODE for "dev"
+ARG MODE=prod
+RUN if [ "$MODE" = "dev" ]; then cp .env.dev .env.production; fi
+
 RUN npm run build
 
-# Etapa de produção leve com Node 22
 FROM node:22-alpine AS runner
 
 WORKDIR /app

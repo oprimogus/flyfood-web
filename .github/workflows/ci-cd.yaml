@@ -22,19 +22,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        
-      - name: Set up environment file based on branch
-        run: |
-            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "Using production environment"
-            else
-            echo "Using development environment"
-            cp .env.dev .env.production
-            fi
-            
-      - name: Show .env
-        run: |
-            cat .env.production
 
       - name: Build NextJS app based on branch
         run: |
@@ -58,14 +45,25 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.ACTIONS_TOKEN }}
+        
+      - name: Define Docker build mode
+        id: mode
+        run: |
+         if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "mode=prod" >> $GITHUB_OUTPUT
+         else
+            echo "mode=dev" >> $GITHUB_OUTPUT
+         fi
 
-      - name: Build and push Next.js app Docker image
+      - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: ./
-          file: ./build/Dockerfile
-          push: true
-          tags: |
+         context: ./
+         file: ./build/Dockerfile
+         push: true
+         build-args: |
+            MODE=${{ steps.mode.outputs.mode }}
+         tags: |
             ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}-${{ github.ref_name }}:${{ github.sha }}
             ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}-${{ github.ref_name }}:latest
 
