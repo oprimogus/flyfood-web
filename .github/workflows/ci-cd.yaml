@@ -31,6 +31,10 @@ jobs:
             echo "Using development environment"
             cp .env.dev .env.production
             fi
+            
+      - name: Show .env
+        run: |
+            cat .env.production
 
       - name: Build NextJS app based on branch
         run: |
