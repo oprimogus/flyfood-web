@@ -42,7 +42,7 @@ const comoFunciona = [
     desc: 'Cadastre-se gratuitamente e configure seu perfil em minutos.'
   },
   {
-    icon: <Settings className="w-10 h-10 mb-4 text-accent" />,
+    icon: <Settings className='w-10 h-10 mb-4 text-accent' />,
     title: '2. Adicione Produtos ou Serviços',
     desc: 'Defina produtos e/ou serviços que você oferece.'
   },
@@ -152,16 +152,16 @@ export default function HomeOwner() {
       {/* Hero Section - Primeira visualização */}
       <section className='relative min-h-screen flex items-center justify-center'>
         {/* Background com overlay */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-cover bg-center"></div>
-          <div className="absolute inset-0 bg-primary"></div>
+        <div className='absolute inset-0 z-0'>
+          <div className='absolute inset-0 bg-cover bg-center' />
+          <div className='absolute inset-0 bg-primary' />
         </div>
 
         {/* Conteúdo */}
-        <div className="container mx-auto px-4 md:px-6 z-10 py-16 md:py-8 flex flex-col justify-center h-full">
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div className="text-white">
-              <span className="inline-block bg-accent text-accent-content px-4 py-1 rounded-full text-sm font-medium mb-6">
+        <div className='container mx-auto px-4 md:px-6 z-10 py-16 md:py-8 flex flex-col justify-center h-full'>
+          <div className='grid md:grid-cols-2 gap-8 md:gap-12 items-center'>
+            <div className='text-white'>
+              <span className='inline-block bg-accent text-accent-content px-4 py-1 rounded-full text-sm font-medium mb-6'>
                 Para Donos de Negócios
               </span>
               <h1 className='text-4xl md:text-5xl lg:text-6xl font-bold mb-6'>
@@ -174,9 +174,9 @@ export default function HomeOwner() {
               </p>
 
               {/* Call to Action */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button className="btn btn-accent btn-lg text-accent-content">
-                  Cadastrar meu negócio <ArrowRight className="ml-2 w-5 h-5" />
+              <div className='flex flex-col sm:flex-row gap-4'>
+                <button type='button' className='btn btn-accent btn-lg text-accent-content'>
+                  Cadastrar meu negócio <ArrowRight className='ml-2 w-5 h-5' />
                 </button>
                 <a href='#como-funciona' className='inline-block'>
                   <button
@@ -435,7 +435,9 @@ export default function HomeOwner() {
             <span className='bg-white/20 text-white px-4 py-1 rounded-full text-sm font-medium'>
               Vantagens FlyFood
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold mt-4">Tudo que seu negócio precisa</h2>
+            <h2 className='text-3xl md:text-4xl font-bold mt-4'>
+              Tudo que seu negócio precisa
+            </h2>
           </div>
 
           <div className='grid md:grid-cols-3 gap-8 md:gap-12'>

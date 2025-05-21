@@ -15,8 +15,8 @@ export default function Footer() {
             className='text-base-content'
           />
         </aside>
-        <p className="font-bold text-lg">FlyFood</p>
-        <p className="text-sm leading-relaxed break-words">
+        <p className='font-bold text-lg'>FlyFood</p>
+        <p className='text-sm leading-relaxed break-words'>
           Conectando você ao melhor da sua região, sem taxas extras.
         </p>
       </div>
@@ -30,10 +30,16 @@ export default function Footer() {
       </nav>
 
       <nav>
-        <h6 className="footer-title">Para Lojas</h6>
-        <a href="_blank" className="link link-hover">Cadastre seu Negócio</a>
-        <a href="_blank" className="link link-hover">Painel do Negócio</a>
-        <a href="_blank" className="link link-hover">Benefícios</a>
+        <h6 className='footer-title'>Para Lojas</h6>
+        <a href='_blank' className='link link-hover'>
+          Cadastre seu Negócio
+        </a>
+        <a href='_blank' className='link link-hover'>
+          Painel do Negócio
+        </a>
+        <a href='_blank' className='link link-hover'>
+          Benefícios
+        </a>
       </nav>
 
       <nav>
