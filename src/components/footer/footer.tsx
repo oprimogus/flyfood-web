@@ -3,16 +3,16 @@ import Image from 'next/image'
 
 export default function Footer() {
   return (
-    <footer className="footer md:footer-horizontal bg-primary text-neutral-content p-10">
+    <footer className='footer md:footer-horizontal bg-primary text-neutral-content p-10'>
       {/* Branding */}
-      <div className="flex flex-col gap-2 max-w-sm">
+      <div className='flex flex-col gap-2 max-w-sm'>
         <aside>
           <Image
-            src="/flyfood/logo/flyfood-white.svg"
-            alt="FlyFood Logo"
+            src='/flyfood/logo/flyfood-white.svg'
+            alt='FlyFood Logo'
             width={50}
             height={50}
-            className="text-base-content"
+            className='text-base-content'
           />
         </aside>
         <p className="font-bold text-lg">FlyFood</p>
@@ -23,8 +23,10 @@ export default function Footer() {
 
       {/* Links rápidos */}
       <nav>
-        <h6 className="footer-title">Links Rápidos</h6>
-        <a href="_blank" className="link link-hover">Sobre nós</a>
+        <h6 className='footer-title'>Links Rápidos</h6>
+        <a href='_blank' className='link link-hover'>
+          Sobre nós
+        </a>
       </nav>
 
       <nav>
@@ -35,9 +37,13 @@ export default function Footer() {
       </nav>
 
       <nav>
-        <h6 className="footer-title">Contato</h6>
-        <a href="_blank" className="link link-hover">contato@flyfood.com.br</a>
-        <a href="_blank" className="link link-hover">(13) 99999-9999</a>
+        <h6 className='footer-title'>Contato</h6>
+        <a href='_blank' className='link link-hover'>
+          contato@flyfood.com.br
+        </a>
+        <a href='_blank' className='link link-hover'>
+          (13) 99999-9999
+        </a>
       </nav>
     </footer>
   )

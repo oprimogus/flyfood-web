@@ -33,7 +33,16 @@ export default function NavHome() {
             <div className='flex flex-col w-full space-y-4 items-center'>
               {' '}
               {/* Alinhado ao centro */}
+<<<<<<< HEAD
               <Link href='/stores' className='text-lg px-4 text-center w-full'>Anuncie seu negócio</Link>
+=======
+              <Link href='/stores' className='text-lg px-4 text-center w-full'>
+                Restaurantes
+              </Link>
+              <Link href='/stores' className='text-lg px-4 text-center w-full'>
+                Lojas
+              </Link>
+>>>>>>> 88dde4a (WIP: Fix biome errors)
               <ButtonSignIn />
             </div>
           </div>

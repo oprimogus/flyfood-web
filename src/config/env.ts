@@ -16,10 +16,12 @@ export const env = {
   clients: {
     flyfoodApi: {
       baseURL:
-        process.env.NEXT_PUBLIC_CLIENT_FLYFOOD_API ?? 'https://flyfood.com.br/flyfood-api'
+        process.env.NEXT_PUBLIC_CLIENT_FLYFOOD_API ??
+        'https://flyfood.com.br/flyfood-api'
     },
     viacep: {
-      baseURL: process.env.NEXT_PUBLIC_CLIENT_VIACEP_API ?? 'https://viacep.com.br'
+      baseURL:
+        process.env.NEXT_PUBLIC_CLIENT_VIACEP_API ?? 'https://viacep.com.br'
     }
   }
 }
