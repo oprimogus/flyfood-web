@@ -17,7 +17,7 @@ export default function Footer() {
         </aside>
         <p className="font-bold text-lg">FlyFood</p>
         <p className="text-sm leading-relaxed break-words">
-          Conectando você aos melhores restaurantes da sua região, sem taxas extras.
+          Conectando você ao melhor da sua região, sem taxas extras.
         </p>
       </div>
 
@@ -28,8 +28,8 @@ export default function Footer() {
       </nav>
 
       <nav>
-        <h6 className="footer-title">Para Lojas e Restaurantes</h6>
-        <a href="_blank" className="link link-hover">Cadastre seu restaurante</a>
+        <h6 className="footer-title">Para Lojas</h6>
+        <a href="_blank" className="link link-hover">Cadastre seu Negócio</a>
         <a href="_blank" className="link link-hover">Painel do Negócio</a>
         <a href="_blank" className="link link-hover">Benefícios</a>
       </nav>

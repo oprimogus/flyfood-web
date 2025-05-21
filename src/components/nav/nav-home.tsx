@@ -33,15 +33,7 @@ export default function NavHome() {
             <div className='flex flex-col w-full space-y-4 items-center'>
               {' '}
               {/* Alinhado ao centro */}
-              <Link
-                href='/stores'
-                className='text-lg px-4 text-center w-full'
-              >
-                Restaurantes
-              </Link>
-              <Link href='/stores' className='text-lg px-4 text-center w-full'>
-                Lojas
-              </Link>
+              <Link href='/stores' className='text-lg px-4 text-center w-full'>Anuncie seu negócio</Link>
               <ButtonSignIn />
             </div>
           </div>
@@ -53,12 +45,6 @@ export default function NavHome() {
         <Link href='/owner' className='link-hover'>
           Anuncie seu negócio
         </Link>
-        {/* <Link href='/' className='link-hover'>
-          Restaurantes
-        </Link>
-        <Link href='/' className='link-hover'>
-          Lojas
-        </Link> */}
       </div>
       <div className='hidden md:flex mx-4 items-center space-x-8'>
         <ButtonSignIn />
