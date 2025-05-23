@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import NavHome from '@/components/nav/nav-home'
 import * as Progress from '@radix-ui/react-progress'
 import {
@@ -6,7 +5,6 @@ import {
   CheckCircle,
   Clock,
   MapPin,
-  Search,
   Shield,
   Star,
   UtensilsCrossed,
@@ -79,7 +77,10 @@ export default function HomeCustomer() {
             {/* Call to Action */}
             <div className='flex flex-col'>
               <div className='flex flex-col sm:flex-row sm:justify-center gap-4'>
-                <button className='btn btn-accent btn-lg text-accent-content'>
+                <button
+                  type='button'
+                  className='btn btn-accent btn-lg text-accent-content'
+                >
                   Pedir agora <MapPin className='ml-2 w-5 h-5' />
                 </button>
                 {/* <a
@@ -202,12 +203,15 @@ export default function HomeCustomer() {
                 className='bg-base-100 p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300'
               >
                 <div className='flex gap-1'>
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-4 h-4 ${i < depoimento.estrelas ? 'text-accent fill-accent' : 'text-base-300'}`}
-                    />
-                  ))}
+                  {[...Array(5)].map((_, i) => {
+                    const key = `depoimento-${i}`
+                    return (
+                      <Star
+                        key={key}
+                        className={`w-4 h-4 ${i < depoimento.estrelas ? 'text-accent fill-accent' : 'text-base-300'}`}
+                      />
+                    )
+                  })}
                 </div>
                 <p className='mt-4 mb-4 italic'>
                   &quot;{depoimento.texto}&quot;
@@ -255,7 +259,10 @@ export default function HomeCustomer() {
           </p>
 
           <div className='flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto'>
-            <button className='btn btn-primary btn-lg text-white '>
+            <button
+              type='button'
+              className='btn btn-primary btn-lg text-white '
+            >
               Ver Lojas Perto de Mim <MapPin className='ml-2 w-5 h-5' />
             </button>
           </div>

@@ -175,7 +175,10 @@ export default function HomeOwner() {
 
               {/* Call to Action */}
               <div className='flex flex-col sm:flex-row gap-4'>
-                <button type='button' className='btn btn-accent btn-lg text-accent-content'>
+                <button
+                  type='button'
+                  className='btn btn-accent btn-lg text-accent-content'
+                >
                   Cadastrar meu negócio <ArrowRight className='ml-2 w-5 h-5' />
                 </button>
                 <a href='#como-funciona' className='inline-block'>
@@ -471,7 +474,7 @@ export default function HomeOwner() {
                 'Avaliações de clientes',
                 'Suporte técnico',
                 'Marketplace local'
-              ].map((recurso, index) => (
+              ].map((recurso) => (
                 <div key={recurso} className='flex items-center gap-2'>
                   <CheckCircle className='w-5 h-5 text-accent' />
                   <span>{recurso}</span>
@@ -622,7 +625,7 @@ export default function HomeOwner() {
                   <div className='divider' />
 
                   <ul className='space-y-3'>
-                    {plano.recursos.map((recurso, index) => (
+                    {plano.recursos.map((recurso) => (
                       <li key={recurso} className='flex items-start gap-2'>
                         <CheckCircle
                           className={`w-5 h-5 mt-0.5 ${plano.popular ? 'text-accent-content' : 'text-accent'}`}
