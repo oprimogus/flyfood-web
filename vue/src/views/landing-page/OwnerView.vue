@@ -310,7 +310,7 @@ const planos = [
                 <td class='font-medium'>Modelo de cobrança</td>
                 <td class='text-center bg-primary/5'>
                   <span class='flex items-center justify-center gap-2'>
-                    <CheckCircle class='w-5 h-5 text-accent' />{' '}
+                    <CheckCircle class='w-5 h-5 text-accent' />
                     Assinatura fixa
                   </span>
                 </td>
