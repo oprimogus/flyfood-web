@@ -1,6 +1,5 @@
-<script lang="ts" setup>
-</script>
+<script lang="ts" setup></script>
 
 <template>
-    <p>HELLO</p>
+  <p>HELLO</p>
 </template>

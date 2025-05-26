@@ -12,10 +12,10 @@ const router = createRouter({
       component: ClientView,
     },
     {
-        path: '/owner',
-        name: 'owner',
-        component: OwnerView,
-    }
+      path: '/owner',
+      name: 'owner',
+      component: OwnerView,
+    },
     // {
     //   path: '/about',
     //   name: 'about',

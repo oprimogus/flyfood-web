@@ -1,11 +1,11 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "daisyui" {
   /* biome-ignore lint/correctness/noUnknownProperty: DaisyUI custom syntax */
   themes: meutema;
 }
 @plugin "daisyui/theme" {
   /* biome-ignore lint/correctness/noUnknownProperty: DaisyUI custom syntax */
-  name: "meutema";
+  name: 'meutema';
   /* biome-ignore lint/correctness/noUnknownProperty: DaisyUI custom syntax */
   default: true;
   /* biome-ignore lint/correctness/noUnknownProperty: DaisyUI custom syntax */

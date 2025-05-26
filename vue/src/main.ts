@@ -9,11 +9,10 @@ import zitadelAuth from './services/zitadelAuth'
 
 const app = createApp(App)
 
-
 const zitadelStarted = await zitadelAuth.oidcAuth.startup()
 if (!zitadelStarted) {
-    console.error('Zitadel Startup was not ok')
-    throw new Error('Zitadel Startup was not ok')
+  console.error('Zitadel Startup was not ok')
+  throw new Error('Zitadel Startup was not ok')
 }
 
 app.use(createPinia())
