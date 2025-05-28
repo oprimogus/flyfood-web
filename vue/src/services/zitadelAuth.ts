@@ -7,6 +7,9 @@ const zitadelAuth: { oidcAuth: OidcAuth; hasRole: (role: string) => any } = crea
   project_resource_id: import.meta.env.VITE_ZITADEL_PROJECT_RESOURCE_ID,
   client_id: import.meta.env.VITE_ZITADEL_CLIENT_ID,
   issuer: import.meta.env.VITE_ZITADEL_ISSUER,
+}, 'zitadel', 0, undefined, {
+  prompt: 'select_account',
+  scope: 'openid profile email'
 })
 
 // handle events
@@ -38,4 +41,6 @@ zitadelAuth.oidcAuth.events.addUserSessionChanged(function () {
   console.log('user session changed')
 })
 
+
 export default zitadelAuth
+

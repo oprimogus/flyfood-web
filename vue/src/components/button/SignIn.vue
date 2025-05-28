@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import zitadelAuth from '@/services/zitadelAuth'
 
-const signIn = zitadelAuth.oidcAuth.signIn
+const signIn = () => zitadelAuth.oidcAuth.signIn()
 </script>
 
 <template>

@@ -1,10 +1,7 @@
 <script lang="ts" setup>
 import {
   ArrowRight,
-  CheckCircle,
-  Clock,
   MapPin,
-  Shield,
   Star,
   UtensilsCrossed,
   Hammer,
@@ -14,7 +11,7 @@ import {
   Pill,
 } from 'lucide-vue-next'
 import NavHome from '@/components/nav/NavHome.vue'
-import Footer from '@/components/footer.vue'
+import Footer from '@/components/TheFooter.vue'
 
 const categorias = [
   { nome: 'Restaurantes', icon: UtensilsCrossed, popular: true },
@@ -174,14 +171,14 @@ const depoimentos = [
                 :class="i <= depoimento.estrelas ? 'text-accent fill-accent' : 'text-base-300'" />
             </div>
 
-            <p class="mt-4 mb-4 italic">“{ depoimento.texto }”</p>
+            <p class="mt-4 mb-4 italic">“{{ depoimento.texto }}”</p>
 
             <div class="flex items-center gap-2">
               <div>
-                <p class="font-medium">{ depoimento.nome }</p>
+                <p class="font-medium">{{ depoimento.nome }}</p>
                 <p class="text-sm text-base-content/70 flex items-center">
                   <MapPin class="w-3 h-3 mr-1" />
-                  { depoimento.cidade }
+                  {{ depoimento.cidade }}
                 </p>
               </div>
             </div>
@@ -213,28 +210,6 @@ const depoimentos = [
             Ver Lojas Perto de Mim
             <MapPin class="ml-2 w-5 h-5" />
           </button>
-        </div>
-
-        <!-- Características extras -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
-          <div class="flex flex-col items-center">
-            <div class="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mb-3">
-              <Clock class="w-8 h-8" />
-            </div>
-            <p class="font-semibold">Rápido</p>
-          </div>
-          <div class="flex flex-col items-center">
-            <div class="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mb-3">
-              <Shield class="w-8 h-8" />
-            </div>
-            <p class="font-semibold">Seguro</p>
-          </div>
-          <div class="flex flex-col items-center">
-            <div class="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mb-3">
-              <CheckCircle class="w-8 h-8" />
-            </div>
-            <p class="font-semibold">Confiável</p>
-          </div>
         </div>
       </div>
     </section>
