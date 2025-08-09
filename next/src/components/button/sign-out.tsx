@@ -1,4 +1,4 @@
-import { signOut } from '@/app/auth'
+import { signOut } from 'src/app/auth'
 import React from 'react'
 
 export default function ButtonSignOut() {

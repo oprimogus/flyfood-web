@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SignIn from '@/components/button/SignIn.vue'
-import { Menu} from 'lucide-vue-next'
+import { Menu } from 'lucide-vue-next'
 </script>
 
 <template>

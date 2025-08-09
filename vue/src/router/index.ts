@@ -11,13 +11,13 @@ const router = createRouter({
       name: 'home',
       component: ClientView,
       beforeEnter: (to, from, next) => {
-          const isAuthenticated = zitadelAuth.oidcAuth.isAuthenticated
-          if (isAuthenticated) {
-              next({ name: 'stores' })
-          } else {
-              next()
-          }
-      }
+        const isAuthenticated = zitadelAuth.oidcAuth.isAuthenticated
+        if (isAuthenticated) {
+          next({ name: 'stores' })
+        } else {
+          next()
+        }
+      },
     },
     {
       path: '/owner',
@@ -28,9 +28,9 @@ const router = createRouter({
       path: '/stores',
       name: 'stores',
       meta: {
-        authName: zitadelAuth.oidcAuth.authName
+        authName: zitadelAuth.oidcAuth.authName,
       },
-      component: () => import('@/views/HomeView.vue'),
+      component: () => import('@/views/StoresView.vue'),
     },
     // {
     //   path: '/about',

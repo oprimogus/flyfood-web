@@ -1,6 +1,6 @@
 'use client'
 import React, { useRef } from 'react'
-import FormAddAddress from '../form/form-add-address'
+import FormAddAddress from 'src/components/form/form-add-address'
 
 export default function ModalAddAddress() {
   const modalRef = useRef<HTMLDialogElement>(null)

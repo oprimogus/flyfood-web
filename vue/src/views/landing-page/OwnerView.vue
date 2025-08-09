@@ -14,6 +14,7 @@ import {
   Smartphone,
   DollarSign,
 } from 'lucide-vue-next'
+import NavHome from '@/components/nav/NavHome.vue'
 
 const beneficios = [
   {

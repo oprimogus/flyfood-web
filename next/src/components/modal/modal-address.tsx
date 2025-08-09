@@ -1,8 +1,8 @@
 'use client'
-import { useAddress } from '@/hooks/flyfood/useAddress'
+import { useAddress } from 'src/hooks/flyfood/useAddress'
 import React, { useEffect, useRef } from 'react'
-import ModalAddAddress from './modal-add-address'
-import ModalDeleteAddress from './modal-delete-address'
+import ModalAddAddress from 'src/components/modal/modal-add-address'
+import ModalDeleteAddress from 'src/components/modal/modal-delete-address'
 
 export default function ModalAddress() {
   const selectedAddress = useAddress((state) => state.selectedAddress)

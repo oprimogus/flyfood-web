@@ -1,16 +1,23 @@
+import { env } from '@/config/env'
 import { createZITADELAuth } from '@zitadel/vue'
 import { User } from 'oidc-client'
 import type { OidcAuth } from 'vue-oidc-client/vue3'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const zitadelAuth: { oidcAuth: OidcAuth; hasRole: (role: string) => any } = createZITADELAuth({
-  project_resource_id: import.meta.env.VITE_ZITADEL_PROJECT_RESOURCE_ID,
-  client_id: import.meta.env.VITE_ZITADEL_CLIENT_ID,
-  issuer: import.meta.env.VITE_ZITADEL_ISSUER,
-}, 'zitadel', 0, undefined, {
-  prompt: 'select_account',
-  scope: 'openid profile email'
-})
+const zitadelAuth: { oidcAuth: OidcAuth; hasRole: (role: string) => any } = createZITADELAuth(
+  {
+    project_resource_id: import.meta.env.VITE_ZITADEL_PROJECT_RESOURCE_ID,
+    client_id: import.meta.env.VITE_ZITADEL_CLIENT_ID,
+    issuer: import.meta.env.VITE_ZITADEL_ISSUER,
+  },
+  'zitadel',
+  0,
+  undefined,
+  {
+    prompt: 'select_account',
+    scope: `openid profile email urn:zitadel:iam:org:project:id:${env.zitadel.projectID}:aud`,
+  },
+)
 
 // handle events
 zitadelAuth.oidcAuth.events.addAccessTokenExpiring(function () {
@@ -41,6 +48,4 @@ zitadelAuth.oidcAuth.events.addUserSessionChanged(function () {
   console.log('user session changed')
 })
 
-
 export default zitadelAuth
-
