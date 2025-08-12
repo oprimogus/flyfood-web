@@ -4,13 +4,21 @@ import { useForm } from '@tanstack/vue-form'
 import { useViaCEP } from '@/hooks/useViaCEP'
 import { z } from 'zod/v4'
 import { useMutateAddress } from '@/hooks/useMutateAddress'
+import { watch } from 'vue'
+
+const props = defineProps<{
+  closeModal: () => void
+}>()
+
+const { cep, data: addressCEP, isLoading } = useViaCEP()
 
 const cepForm = useForm({
   defaultValues: { postalCode: '' },
-  onSubmit: async ({ value }) => {
-    console.log(value)
-  },
+  onSubmit: ({ value }) => {
+    console.log('CEP enviado', value)
+  }
 })
+
 
 const addressForm = useForm({
   defaultValues: {} as Address,
@@ -21,7 +29,7 @@ const addressForm = useForm({
 
 const { addAddressMutation } = useMutateAddress()
 
-const { cep, data: addressCEP, isLoading, refetch } = useViaCEP()
+
 
 // Busca CEP e preenche campos
 const handleSearchCEP = async () => {
@@ -35,6 +43,9 @@ const handleSearchCEP = async () => {
     addressForm.setFieldValue('postalCode', data.cep || '')
   }
 }
+
+watch(addressCEP, () => handleSearchCEP())
+
 </script>
 
 <template>
@@ -48,7 +59,7 @@ const handleSearchCEP = async () => {
             .min(1, 'Campo necessário.')
             .regex(/^\d{5}-\d{3}$/, 'CEP inválido.'),
         }">
-        <template v-slot="{ field, state }">
+        <template v-slot="{ field }">
           <div class="flex flex-row space-x-2">
             <label class="input">
               <span class="label">CEP</span>
@@ -244,7 +255,7 @@ const handleSearchCEP = async () => {
     </div>
 
     <div class="mt-6 flex flex-row space-x-4 items-center justify-center">
-      <button type="click" class="btn btn-secondary" @click="handleCancel">Cancelar</button>
+      <button type="button" class="btn btn-secondary" @click="props.closeModal">Cancelar</button>
       <button type="submit" class="btn btn-primary" :disabled="isLoading">
         {{ isLoading ? 'Salvando...' : 'Salvar endereço' }}
       </button>

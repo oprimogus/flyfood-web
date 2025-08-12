@@ -34,7 +34,7 @@ const options: PluginOptions = {
 
 app.use(Toast, options);
 
-const zitadelStarted = await zitadelAuth.oidcAuth.startup()
+const zitadelStarted = zitadelAuth.oidcAuth.startup()
 if (!zitadelStarted) {
   console.error('Zitadel Startup was not ok')
   throw new Error('Zitadel Startup was not ok')

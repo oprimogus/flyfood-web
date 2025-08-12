@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useCustomer } from '@/hooks/useCustomer'
 import type { Address } from '@/services/flyfood-api/types'
 import ModalAddAddress from '@/components/modal/ModalAddAddress.vue'
