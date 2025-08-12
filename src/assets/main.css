@@ -1,0 +1,62 @@
+@import 'tailwindcss';
+@plugin "daisyui" {
+  /* biome-ignore lint/correctness/noUnknownProperty: DaisyUI custom syntax */
+  themes: meutema;
+}
+@plugin "daisyui/theme" {
+  /* biome-ignore lint/correctness/noUnknownProperty: DaisyUI custom syntax */
+  name: 'meutema';
+  /* biome-ignore lint/correctness/noUnknownProperty: DaisyUI custom syntax */
+  default: true;
+  /* biome-ignore lint/correctness/noUnknownProperty: DaisyUI custom syntax */
+  prefersdark: false;
+  color-scheme: light;
+
+  /* Cores base */
+  --color-base-100: #fdfffc;
+  --color-base-200: #f5f7f6;
+  --color-base-300: #e8eae9;
+  --color-base-content: #011627;
+
+  /* Cores principais */
+  --color-primary: #f42c04;
+  --color-primary-content: #fdfffc;
+
+  /* Cores secundárias */
+  --color-secondary: #66101f;
+  --color-secondary-content: #fdfffc;
+
+  /* Cores de destaque */
+  --color-accent: #e6af2e;
+  --color-accent-content: #011627;
+
+  /* Cores neutras */
+  --color-neutral: #011627;
+  --color-neutral-content: #fdfffc;
+
+  /* Cores de estado */
+  --color-info: #66101f;
+  --color-info-content: #fdfffc;
+  --color-success: #2ecc71;
+  --color-success-content: #fdfffc;
+  --color-warning: #e6af2e;
+  --color-warning-content: #011627;
+  --color-error: #f55d3e;
+  --color-error-content: #fdfffc;
+
+  /* Configurações de arredondamento */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+
+  /* Tamanhos base */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  /* Tamanho da borda */
+  --border: 1px;
+
+  /* Efeitos */
+  --depth: 1;
+  --noise: 0;
+}

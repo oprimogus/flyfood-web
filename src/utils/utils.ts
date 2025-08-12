@@ -1,11 +1,7 @@
-export const formatCurrency = (
-  value: number,
-  currency = 'BRL',
-  locale = 'pt-br'
-): string => {
+export const formatCurrency = (value: number, currency = 'BRL', locale = 'pt-br'): string => {
   return new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency
+    currency,
   }).format(value / 100)
 }
 
@@ -17,18 +13,14 @@ export const formatDeliveryTimeToHour = (value: number) => {
   if (value >= 60) {
     const hours = Math.floor(value / 60)
     const remainingMinutes = value % 60
-    return remainingMinutes > 0
-      ? `${hours}h ${remainingMinutes}min`
-      : `${hours}h`
+    return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}min` : `${hours}h`
   }
   return `${value} min`
 }
 
 export const formatDeliveryTimeToMinutes = (value: string) => {
   if (typeof value === 'string' && value.includes('h')) {
-    const [hours, minutes] = value
-      .split('h')
-      .map((part) => Number.parseInt(part) || 0)
+    const [hours, minutes] = value.split('h').map((part) => Number.parseInt(part) || 0)
     return hours * 60 + minutes
   }
   return Number.parseInt(value, 10)
@@ -38,7 +30,7 @@ export const calculateDistance = (
   lat1: string,
   lon1: string,
   lat2: string,
-  lon2: string
+  lon2: string,
 ): string => {
   if (!lat1 || !lon1 || !lat2 || !lon2) {
     return ''
